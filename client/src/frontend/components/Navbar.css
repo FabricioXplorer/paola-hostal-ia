@@ -1,0 +1,94 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap');
+
+/* Reset básico para evitar márgenes extraños */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  
+  /* EL CAMBIO CLAVE: Márgenes laterales y superior */
+  margin: 20px 5% 0 5%; /* 20px arriba, 5% a los lados */
+  padding: 0 50px; /* Padding interno sutil */
+  height: 90px;
+  
+  background-color: #ffffff;
+  border-radius: 100px; /* Borde tipo cápsula */
+  
+  /* Sombra suave para darle profundidad (Layering) */
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.03); 
+  
+  position: sticky;
+  top: 20px;
+  z-index: 1000;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.logo-img {
+  height: 60px; /* Ajusta este valor para que el logo dorado se vea perfecto */
+  width: auto;
+  object-fit: contain;
+}
+
+.nav-links {
+  display: flex;
+  gap: 35px;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: #1a1a1a;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: 0.3s ease;
+}
+
+.nav-link:hover {
+  color: #C5A059; /* El dorado del logo al pasar el mouse */
+}
+
+.right-section {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+/* El botón INTRANET estilo Luxury */
+.login-btn {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  background-color: #002B69; /* Azul marino */
+  color: white;
+  padding: 15px 30px;
+  border-radius: 50px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  transition: 0.3s;
+}
+
+.login-btn:hover {
+  background-color: #C5A059;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(197, 160, 89, 0.3);
+}
+
+.menu-icon {
+  color: #1a1a1a;
+  cursor: pointer;
+  margin-left: 10px;
+}
