@@ -64,6 +64,7 @@
     padding: 20px 7% 80px;
     gap: 40px;
     align-items: flex-start; 
+
 }
 
 /* --- SIDEBAR IZQUIERDO --- */
@@ -84,6 +85,7 @@
     font-size: 16px;
     cursor: pointer;
     transition: 0.3s;
+    margin-left: 40px;
 }
 
 .bv-socials i:hover { color: #C5A059; }
@@ -338,7 +340,7 @@
     -webkit-backdrop-filter: blur(15px);
     backdrop-filter: blur(15px);
     min-width: 800px; 
-    margin-right: 60px;
+    margin-right: 80px;
 }
 .status-grid-horizontal {
     display: flex;

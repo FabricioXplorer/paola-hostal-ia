@@ -34,7 +34,7 @@ const Home = () => {
             <p className="bv-search-subtext">Para tu sitio ideal</p>
           </div>
           
-          <button className="bv-welcome-world">DESCUBRE EL PAOLA HOSTAL</button> 
+          <button className="bv-welcome-world">DESCUBRE MAS DE PAOLA HOSTAL</button> 
 
           <div className="bv-data-widget">
             <div className="widget-title">
@@ -61,7 +61,7 @@ const Home = () => {
                 <li>Desayuno Bufete <span>Completo</span></li>
                 <li>Cámaras de Seguridad <span>Seguro</span></li>
                 <li>Tv Cable <span>Incluido</span></li>
-                <li>Wi Fi Gratis <span>Gratis</span></li>
+                <li>Wi Fi <span>Gratis</span></li>
             </ul>
           </div>
 
