@@ -5,191 +5,242 @@ import logoPaola from '../assets/images/logo.png';
 const Home = () => {
   return (
     <div className="bon-voyage-container">
-      {/* 1. HEADER SUPERIOR */}
-      <header className="bv-header">
-        <div className="bv-logo-section">
-          <img src={logoPaola} alt="Paola Hostal" className="bv-main-logo" />
-        </div>
+      {/* 1. HEADER CENTRADO */}
+      <header className="bv-header-centered">
+        <img src={logoPaola} alt="Paola Hostal" className="bv-main-logo" />
         <nav className="bv-nav">
           <a href="/" className="active">Inicio</a>
-          <a href="/habitaciones">Reservas</a>
-          <a href="/ia">Sitios</a>
-          <a href="/sucre">Contactanos</a>
+          <a href="/reservas">Reservas</a>
+          <a href="/habitaciones">Habitaciones</a>
+          <a href="/servicios">Servicios y Bufete</a>
+          <a href="/contacto">Contáctanos</a>
         </nav>
       </header>
 
-      <div className="bv-main-layout">
-        {/* 2. COLUMNA IZQUIERDA (Sidebar) */}
-        <aside className="bv-sidebar">
-          <div className="bv-socials">
-            <i className="fa-brands fa-facebook-f"></i>
-            <i className="fa-brands fa-twitter"></i>
-            <i className="fa-brands fa-instagram"></i>
-            <i className="fa-brands fa-pinterest-p"></i>
-          </div>
+      {/* 2. CONTENIDO CENTRAL (PAO) */}
+      <main className="bv-hero-content">
+        <div className="pao-badge">
+          <span className="pao-dot"></span> ASISTENTE INTELIGENTE ACTIVO
+        </div>
+        <h1 className="pao-title">
+            TU ESTANCIA EN SUCRE, <br />
+            <span>AHORA A UN CLIC.</span>
+        </h1>
+        <p className="pao-subtitle">
+          Verifico disponibilidad y gestiono tu reserva al instante <br />
+          para tu mejor estancia en la Ciudad Blanca.
+        </p>
+        <div className="pao-hero-actions">
+          <button className="bv-btn-reserve-now">RESERVAR AHORA</button>
+          <button className="bv-btn-secondary">VER HABITACIONES</button>
+        </div>
+      </main>
 
-          <div className="bv-search-tag-container">
-            <i className="fa-solid fa-binoculars bv-icon-big"></i>
-            <div className="bv-search-btn-box">BÚSQUEDA</div>
-            <p className="bv-search-subtext">Para tu sitio ideal</p>
-          </div>
-          
-          <button className="bv-welcome-world">DESCUBRE MAS DE PAOLA HOSTAL</button> 
+      {/* 3. SECCIÓN HABITACIONES INMERSIVAS (Impacto Visual) */}
+      <section className="bv-rooms-preview">
+        <div className="section-header">
+          <span className="section-tag">NUESTROS AMBIENTES</span>
+          <h2 className="section-title">Habitaciones Diseñadas para tu Descanso</h2>
+        </div>
 
-          <div className="bv-data-widget">
-            <div className="widget-title">
-              Precio de habitaciones <i className="fa-solid fa-bed"></i>
+        <div className="rooms-grid">
+          {/* 1. Simple - Estilo Card */}
+          <div className="room-card">
+            <div className="room-img-container">
+              <img src="https://images.unsplash.com/photo-1590490360182-c33d57733427?w=500" alt="Simple" />
+              <div className="room-price-tag">190 Bs.</div>
             </div>
-            <ul className="widget-list">
-              <li>Habitación Simple <span>190 Bs.</span></li>
-              <li>Habitación Doble <span>280 Bs.</span></li>
-              <li>Habitación Triple <span>380 Bs.</span></li>
-              <li>Habitación Cuádruple<span>500 Bs.</span></li>
-              <li>Habitación Matrimonial <span>280 Bs.</span></li>
-              <li>Habitación Familiar <span>380 Bs.</span></li>
-              <li>Habitación Suite<span>380 Bs.</span></li>
-            </ul>
+            <div className="room-info">
+              <h3>Habitación Simple</h3>
+              <p>Confort individual con escritorio y baño privado.</p>
+              <button className="bv-btn-info">MÁS INFO <i className="fa-solid fa-arrow-right"></i></button>
+            </div>
           </div>
 
-          <div className="bv-data-widget">
-            <div className="widget-title">
-              Servicios Incluidos <i className="fa-solid fa-bell-concierge"></i>
+          {/* 2. Doble - Estilo Card */}
+          <div className="room-card">
+            <div className="room-img-container">
+              <img src="https://images.unsplash.com/photo-1566665797739-1674de7a421a?w=500" alt="Doble" />
+              <div className="room-price-tag">280 Bs.</div>
             </div>
-            <ul className="widget-list">
-                <li>Agua Caliente 24/7 <span>Incluido</span></li>
-                <li>Baño privado <span>Incluido</span></li>
-                <li>Desayuno Bufete <span>Completo</span></li>
-                <li>Cámaras de Seguridad <span>Seguro</span></li>
-                <li>Tv Cable <span>Incluido</span></li>
-                <li>Wi Fi <span>Gratis</span></li>
-            </ul>
+            <div className="room-info">
+              <h3>Habitación Doble</h3>
+              <p>Espacio compartido con camas premium y vista al patio.</p>
+              <button className="bv-btn-info">MÁS INFO <i className="fa-solid fa-arrow-right"></i></button>
+            </div>
           </div>
 
-          <div className="bv-data-widget">
-            <div className="widget-title">
-              Estado del Tiempo <i className="fa-solid fa-cloud-sun"></i>
+          {/* 3. Matrimonial - Estilo Card */}
+          <div className="room-card">
+            <div className="room-img-container">
+              <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=500" alt="Matrimonial" />
+              <div className="room-price-tag">280 Bs.</div>
             </div>
-            <div className="weather-info" style={{textAlign: 'center', padding: '10px'}}>
-              <span style={{fontSize: '24px', fontWeight: '800', color: '#C5A059'}}>21°C</span>
-              <p style={{fontSize: '10px', opacity: 0.7, textTransform: 'uppercase', letterSpacing: '1px'}}>
-                Sucre, Bolivia - Despejado
+            <div className="room-info">
+              <h3>Habitación Matrimonial</h3>
+              <p>Elegancia y privacidad para una estancia inolvidable.</p>
+              <button className="bv-btn-info">MÁS INFO <i className="fa-solid fa-arrow-right"></i></button>
+            </div>
+          </div>
+
+          {/* 4. Triple */}
+          <div className="room-card">
+            <div className="room-img-container">
+              <img src="https://images.unsplash.com/photo-1544124499-58912cbddaad?w=500" alt="Triple" />
+              <div className="room-price-tag">380 Bs.</div>
+            </div>
+            <div className="room-info">
+              <h3>Habitación Triple</h3>
+              <p>Amplio espacio para grupos o amigos con total comodidad.</p>
+              <button className="bv-btn-info">MÁS INFO <i className="fa-solid fa-arrow-right"></i></button>
+            </div>
+          </div>
+
+          {/* 5. Cuádruple */}
+          <div className="room-card">
+            <div className="room-img-container">
+              <img src="https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?w=500" alt="Cuádruple" />
+              <div className="room-price-tag">500 Bs.</div>
+            </div>
+            <div className="room-info">
+              <h3>Habitación Cuádruple</h3>
+              <p>Ideal para delegaciones o grupos grandes de viajeros.</p>
+              <button className="bv-btn-info">MÁS INFO <i className="fa-solid fa-arrow-right"></i></button>
+            </div>
+          </div>
+
+          {/* 6. Familiar */}
+          <div className="room-card">
+            <div className="room-img-container">
+              <img src="https://images.unsplash.com/photo-1598928506311-c55ded91a20c?w=500" alt="Familiar" />
+              <div className="room-price-tag">380 Bs.</div>
+            </div>
+            <div className="room-info">
+              <h3>Habitación Familiar</h3>
+              <p>Ambiente acogedor diseñado para el bienestar de tu familia.</p>
+              <button className="bv-btn-info">MÁS INFO <i className="fa-solid fa-arrow-right"></i></button>
+            </div>
+          </div>
+
+          {/* 7. Suite */}
+          <div className="room-card room-card-suite">
+            <div className="room-img-container">
+              <img src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=500" alt="Suite" />
+              <div className="room-price-tag">380 Bs.</div>
+            </div>
+            <div className="room-info">
+              <h3>Habitación Suite</h3>
+              <p>Nuestra opción de lujo con áreas integradas y confort superior.</p>
+              <button className="bv-btn-info">MÁS INFO <i className="fa-solid fa-arrow-right"></i></button>
+            </div>
+          </div>
+
+          {/* BLOQUE PAO - RECOMENDACIÓN AMPLIA */}
+          <div className="pao-recommendation-wide">
+            <div className="pao-rec-wrapper">
+              <div className="pao-badge-mini">
+                <span className="pao-dot"></span> ASISTENTE INTELIGENTE
+              </div>
+              <h3 className="pao-rec-title">
+                ¿DUDAS SOBRE TU <br /><span>ELECCIÓN IDEAL?</span>
+              </h3>
+              <p className="pao-rec-subtitle">
+                No te preocupes por los detalles. Cuéntame con quién viajas o el motivo de tu visita 
+                y seleccionaré la habitación que mejor se adapte a tus necesidades al instante.
               </p>
-            </div>
-          </div>
-        </aside>
-        
-
-        {/* 3. BLOQUE DERECHO (ÁREA DE CONTENIDO) */}
-        <section className="bv-content-area">
-          
-          <div className="bv-main-content-flex">
-            {/* CHAT DE PAO: Prototipo Principal */}
-            <div className="bv-chat-glass-container">
-                <div className="bv-chat-header-integrated">
-                  <div className="bv-pao-brand">
-                      <div className="status-indicator"></div>
-                      <h3>PAO <span>SISTEMA INTELIGENTE</span></h3>
-                  </div>
-                  <div className="bv-chat-controls">
-                      <i className="fa-solid fa-expand-arrows-alt"></i>
-                  </div>
-                </div>
-                
-                <div className="bv-chat-body-integrated">
-                  <div className="bv-bubble-integrated">
-                      <p>TE DOY LA BIENVENIDA, SOY <span>PAO</span>.</p>
-                      <p>Puedo verificar <strong>disponibilidad</strong> y gestionar tu <strong>reserva</strong> al instante.</p>
-                      <p>¿Qué habitación buscas hoy?</p>
-                  </div>
-
-                  <div className="bv-chat-actions-integrated">
-                      <button className="bv-action-pill">CONSULTAR DISPONIBILIDAD</button>
-                      <button className="bv-action-pill-outline">VER HABITACIONES</button>
-                  </div>
-                </div>
-            </div>
-
-            {/* DECORACIÓN: Bloque Ciudad */}
-            <div className="bv-destination-card">
-                <h2 className="city-title">SUCRE</h2>
-                <p className="city-tagline">LA CIUDAD BLANCA</p>
-                <div className="city-description">
-                    Patrimonio de la Humanidad. Disfruta de la arquitectura colonial 
-                    y el mejor clima de Bolivia.
-                </div>
-                <button className="bv-explore-btn">EXPLORAR CIUDAD</button>
-            </div>
-          </div>
-
-          {/* GALERÍA DE AMBIENTES */}
-          <div className="bv-quick-gallery">
-            <div className="gallery-item">
-              <div className="gallery-img-wrapper">
-                <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=300" alt="Habitación" />
-                <div className="gallery-label">HABITACIONES</div>
-              </div>
-            </div>
-
-            <div className="gallery-item">
-              <div className="gallery-img-wrapper">
-                <img src="https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&w=300" alt="Patio colonial" />
-                <div className="gallery-label">PATIO COLONIAL</div>
-              </div>
-            </div>
-
-            <div className="gallery-item">
-              <div className="gallery-img-wrapper">
-                <img src="https://images.unsplash.com/photo-1551882547-ff43c63faf76?auto=format&fit=crop&w=300" alt="Desayuno" />
-                <div className="gallery-label">DESAYUNO BUFETE</div>
-              </div>
-            </div>
-
-            <div className="gallery-item">
-              <div className="gallery-img-wrapper">
-                <img src="https://images.unsplash.com/photo-1518182170546-07661fd94144?auto=format&fit=crop&w=300" alt="Sucre" />
-                <div className="gallery-label">CENTRO HISTÓRICO</div>
+              <div className="pao-hero-actions">
+                <button className="bv-btn-chat-pao">
+                  SOLICITAR RECOMENDACIÓN <i className="fa-solid fa-wand-magic-sparkles"></i>
+                </button>
               </div>
             </div>
           </div>
+        </div>
+      </section>
 
-          {/* CONSOLA DE DATOS INFERIOR */}
-          <div className="bv-bottom-data-row">
-            <div className="bv-status-widget-horizontal">
-                <div className="widget-header-gold">
-                    ESTADO DEL SISTEMA EN TIEMPO REAL <i className="fa-solid fa-microchip"></i>
-                </div>
-                
-                <div className="status-grid-horizontal">
-                    <div className="status-item-mini">
-                        <p>Habitaciones Libres</p>
-                        <div className="status-flex">
-                          <span>12 / 18</span>
-                          <div className="progress-bar-mini">
-                            <div className="progress-fill" style={{width: '65%'}}></div>
-                          </div>
-                        </div>
-                    </div>
+{/* --- SECCIÓN DESAYUNO BUFETE CENTRADA --- */}
+<section className="bv-buffet-section">
+  <div className="buffet-overlay-centered">
+    <div className="buffet-content-centered">
+      <span className="buffet-tag">SABORES DE LA MAÑANA</span>
+      <h2 className="buffet-title">Desayuno Bufete Regional</h2>
+      <p className="buffet-description">
+        Disfruta de una variedad completa para empezar tu día con energía. <br />
+        Desde opciones saludables hasta clásicos calientes, servidos cada mañana.
+      </p>
+      
+      <div className="buffet-menu-grid-centered">
+        <div className="menu-category">
+          <h4><i className="fa-solid fa-leaf"></i> Saludable</h4>
+          <p>Yogurt, granola, gelatina y frutas.</p>
+        </div>
+        <div className="menu-category">
+          <h4><i className="fa-solid fa-egg"></i> Calientes</h4>
+          <p>Huevos estrellados y a la copa.</p>
+        </div>
+        <div className="menu-category">
+          <h4><i className="fa-solid fa-mug-hot"></i> Bebidas</h4>
+          <p>Café premium, mates y jugos.</p>
+        </div>
+        <div className="menu-category">
+          <h4><i className="fa-solid fa-clock"></i> Horario</h4>
+          <p>07:30 a 09:30 AM.</p>
+        </div>
+      </div>
 
-                    <div className="status-item-mini">
-                        <p>Demanda hoy</p>
-                        <span className="demand-tag">ALTA <i className="fa-solid fa-chart-line"></i></span>
-                    </div>
-
-                    <div className="status-item-mini">
-                        <p>Siguiente Limpieza</p>
-                        <span className="time-tag">14:30 PM <i className="fa-solid fa-clock"></i></span>
-                    </div>
-
-                    <div className="system-sync">
-                        <div className="sync-dot"></div> SISTEMA SINCRONIZADO
-                    </div>
-                </div>
-            </div>
-          </div>
-
-        </section>
+      <div className="buffet-actions-centered">
+        <div className="buffet-badge">
+          <i className="fa-solid fa-circle-check"></i> INCLUIDO EN TODAS TUS RESERVAS
+        </div>
+        <button className="bv-btn-buffet-more">
+          MÁS DETALLES <i className="fa-solid fa-chevron-right"></i>
+        </button>
       </div>
     </div>
+  </div>
+</section>
+{/* --- FOOTER FINAL --- */}
+<footer className="bv-footer">
+  <div className="footer-content">
+    {/* Columna 1: Logo y Eslogan */}
+    <div className="footer-column brand-col">
+      <img src={logoPaola} alt="Paola Hostal" className="footer-logo" />
+      <p>Tu lugar ideal en el corazón histórico de la Ciudad Blanca.</p>
+      <div className="footer-socials">
+        <a href="#"><i className="fa-brands fa-facebook-f"></i></a>
+        <a href="#"><i className="fa-brands fa-whatsapp"></i></a>
+        <a href="#"><i className="fa-brands fa-tiktok"></i></a>
+      </div>
+    </div>
+
+    {/* Columna 2: Enlaces Rápidos */}
+    <div className="footer-column">
+      <h4>EXPLORAR</h4>
+      <ul>
+        <li><a href="/habitaciones">Reservas</a></li>
+        <li><a href="/habitaciones">Habitaciones</a></li>
+        <li><a href="/servicios">Servicios y Bufete</a></li>
+        <li><a href="/nosotros">Contactos</a></li>
+      </ul>
+    </div>
+
+    {/* Columna 3: Contacto */}
+    <div className="footer-column">
+      <h4>CONTACTO</h4>
+      <ul>
+        <li><i className="fa-solid fa-location-dot"></i> Calle Colón #138, Sucre - Bolivia</li>
+        <li><i className="fa-solid fa-phone"></i> +591-71154330-6441419</li>
+        <li><i className="fa-solid fa-envelope"></i> hostalpaol@gmail.com</li>
+      </ul>
+    </div>
+  </div>
+
+  <div className="footer-bottom">
+    <p>&copy; 2026 Paola Hostal - Sistema Inteligente PAO. Todos los derechos reservados.</p>
+  </div>
+</footer>
+    </div>
+    
   );
 };
 
