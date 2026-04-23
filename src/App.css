@@ -1,0 +1,50 @@
+.global-nav {
+    position: sticky;
+    top: 0;
+    width: 100%;
+    background: rgba(0, 15, 45, 0.8); /* Fondo semi-transparente para que no tape el contenido */
+    backdrop-filter: blur(10px);
+    padding: 20px 0;
+    z-index: 100;
+}
+/* --- ESTILOS DEL NAVBAR GLOBAL --- */
+.bv-header-centered {
+    padding: 30px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    z-index: 100;
+    width: 100%;
+    /* Agregamos un fondo sutil por si el scroll pasa por debajo */
+    background: rgba(0, 15, 45, 0.2);
+    backdrop-filter: blur(5px);
+}
+
+.bv-main-logo {
+    height: 75px; /* Un poco más pequeño para que no quite tanto espacio al chat */
+    filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));
+    transition: 0.3s;
+}
+
+.bv-nav {
+    display: flex;
+    gap: 30px;
+}
+
+.bv-nav a {
+    text-decoration: none;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    transition: 0.3s;
+    padding-bottom: 5px;
+    border-bottom: 2px solid transparent;
+}
+
+.bv-nav a.active, .bv-nav a:hover {
+    color: #C5A059;
+    border-bottom-color: #C5A059;
+}

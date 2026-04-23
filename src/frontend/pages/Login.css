@@ -1,0 +1,59 @@
+.login-container {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: radial-gradient(circle, #1e293b 0%, #0f172a 100%);
+}
+
+.login-card {
+  background: white;
+  padding: 40px;
+  border-radius: 15px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+  border-top: 5px solid #e2b04a; /* El dorado de Paola Hostal */
+}
+
+.login-card h2 {
+  margin-bottom: 30px;
+  color: #1e293b;
+}
+
+.input-group {
+  display: flex;
+  align-items: center;
+  background: #f1f5f9;
+  margin-bottom: 20px;
+  padding: 10px 15px;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+}
+
+.input-group input {
+  border: none;
+  background: transparent;
+  margin-left: 10px;
+  width: 100%;
+  outline: none;
+  color: #334155;
+}
+
+.login-btn {
+  width: 100%;
+  padding: 12px;
+  background: #e2b04a;
+  color: #0f172a;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.login-btn:hover {
+  background: #d4a03a;
+  transform: translateY(-2px);
+}

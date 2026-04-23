@@ -1,0 +1,222 @@
+/* Contenedor principal de la página */
+.admin-page {
+  padding: 30px;
+  background-color: #ffffff; /* Fondo blanco sólido para que resalte */
+  min-height: 100vh;
+}
+
+/* Título de la sección */
+.page-title {
+  color: #1e293b !important; /* Azul muy oscuro para que se lea bien */
+  margin-bottom: 25px;
+  font-size: 1.8rem;
+  font-weight: 700;
+  border-left: 5px solid #e2b04a; 
+  padding-left: 15px;
+}
+
+/* --- CABECERA FLEXIBLE (Título + Botón) --- */
+.admin-header-flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+/* Contenedor de la Tabla */
+.table-container {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  border: 1px solid #e2e8f0;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  background-color: white;
+}
+
+/* Encabezados de la tabla (Dorado) */
+.admin-table th {
+  background-color: #e2b04a; 
+  color: #0f172a !important; 
+  padding: 18px 15px;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+/* Celdas de la tabla (Texto Oscuro) */
+.admin-table td {
+  padding: 15px;
+  border-bottom: 1px solid #f1f5f9;
+  color: #334155 !important; 
+  font-size: 0.95rem;
+}
+
+/* Efecto al pasar el mouse por la fila */
+.admin-table tr:hover {
+  background-color: #f8fafc;
+}
+
+/* --- MODAL FLOTANTE (Overlay) --- */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6); 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  backdrop-filter: blur(3px);
+}
+
+.modal-content {
+  background: white;
+  width: 600px;
+  border-radius: 15px;
+  padding: 30px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+  animation: slideUp 0.3s ease-out;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #f1f5f9;
+  padding-bottom: 15px;
+  margin-bottom: 20px;
+}
+
+.btn-close {
+  background: none;
+  border: none;
+  font-size: 2rem;
+  cursor: pointer;
+  color: #94a3b8;
+}
+
+.modal-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #64748b;
+  margin-bottom: 5px;
+}
+
+.form-group input, .form-group select {
+  padding: 10px;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+}
+
+/* --- BOTONES --- */
+.btn-add-reserva {
+  background: #e2b04a;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.btn-add-reserva:hover {
+  background: #d4a33f;
+}
+
+.btn-submit-modal {
+  grid-column: span 2;
+  background: #1e293b;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.btn-cancel {
+  background: #fee2e2;
+  color: #991b1b;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+/* --- BADGES DE ESTADO --- */
+.status-badge {
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  display: inline-block;
+}
+
+.status-badge.disponible { background-color: #dcfce7; color: #166534 !important; }
+.status-badge.ocupada { background-color: #fee2e2; color: #991b1b !important; }
+.status-badge.confirmada { background-color: #dbeafe; color: #1e40af !important; }
+.status-badge.cancelada { background-color: #f1f5f9; color: #64748b !important; text-decoration: line-through; }
+
+/* --- ANIMACIONES --- */
+@keyframes slideUp {
+  from { transform: translateY(50px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.status-badge.superadmin { background-color: #ede9fe; color: #5b21b6 !important; border: 1px solid #5b21b6; }
+.status-badge.recepcionista { background-color: #e0f2fe; color: #075985 !important; border: 1px solid #075985; }
+
+
+@media print {
+    /* Ocultar elementos de navegación y botones */
+    .sidebar-container, 
+    .btn-add-reserva,
+    .page-title {
+        display: none !important;
+    }
+
+    /* Ajustar márgenes para el papel */
+    .admin-main-content {
+        margin-left: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+    }
+
+    .admin-page {
+        padding: 0 !important;
+    }
+
+    /* Mostrar encabezado de impresión */
+    .print-only-header {
+        display: block !important;
+    }
+
+    /* Forzar que se vean los bordes de las tarjetas */
+    .stat-card {
+        box-shadow: none !important;
+        border: 1px solid #ccc !important;
+        break-inside: avoid;
+    }
+}

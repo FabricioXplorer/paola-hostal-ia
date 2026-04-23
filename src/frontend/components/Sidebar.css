@@ -1,0 +1,98 @@
+.sidebar-container {
+  width: 260px;
+  height: 100vh;
+  /* Degradado sutil con los colores de tu header global */
+  background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%); 
+  color: white;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  position: fixed;
+  left: 0;
+  top: 0;
+  box-shadow: 4px 0 15px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  border-right: 2px solid #e2b04a; /* Línea dorada de acento vertical */
+}
+
+.sidebar-logo-section {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 40px;
+  padding: 10px;
+  border-bottom: 1px solid rgba(226, 176, 74, 0.2); /* Dorado suave */
+}
+
+.sidebar-logo-text {
+  font-size: 1.3rem;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  color: #ffffff;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.sidebar-nav {
+  flex: 1;
+}
+
+.sidebar-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar-item {
+  margin-bottom: 10px;
+}
+
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #cbd5e1; /* Gris azulado claro para texto inactivo */
+  text-decoration: none;
+  padding: 12px 15px;
+  border-radius: 10px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-weight: 500;
+}
+
+/* Efecto Hover: Dorado sutil */
+.sidebar-link:hover {
+  background-color: rgba(226, 176, 74, 0.15); 
+  color: #e2b04a;
+  transform: translateX(5px);
+}
+
+/* Clase Activa: Color dorado corporativo */
+.sidebar-link.active {
+  background-color: #e2b04a; /* Dorado Paola Hostal */
+  color: #0f172a; /* Texto oscuro para contraste */
+  box-shadow: 0 4px 12px rgba(226, 176, 74, 0.3);
+}
+
+.sidebar-footer {
+  border-top: 1px solid rgba(226, 176, 74, 0.2);
+  padding-top: 20px;
+}
+
+.sidebar-link-logout {
+  color: #fca5a5; /* Rojo suave para no desentonar tanto */
+}
+
+.sidebar-link-logout:hover {
+  background-color: rgba(239, 68, 68, 0.15);
+  color: #f87171;
+  transform: translateX(5px);
+}
+
+/* Estilo para los iconos de Lucide dentro del Sidebar */
+.sidebar-link svg {
+  transition: transform 0.3s ease;
+}
+
+.sidebar-link:hover svg {
+  transform: scale(1.1);
+}

@@ -1,0 +1,156 @@
+/* --- CONTENEDOR PRINCIPAL --- */
+.pao-main-container {
+    height: calc(100vh - 160px); 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+/* --- INTERFAZ DE CHAT --- */
+.pao-chat-interface {
+    width: 100%;
+    max-width: 900px;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.03);
+    
+    /* Primero la versión para Safari/iOS */
+    -webkit-backdrop-filter: blur(25px);
+    /* Luego la versión estándar */
+    backdrop-filter: blur(25px);
+    
+    border: 1px solid rgba(197, 160, 89, 0.2);
+    border-radius: 30px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 40px 100px rgba(0,0,0,0.5);
+    overflow: hidden;
+}
+
+/* --- HEADER DEL CHAT --- */
+.pao-chat-header {
+    padding: 20px 40px;
+    background: rgba(0, 15, 45, 0.4);
+    border-bottom: 1px solid rgba(197, 160, 89, 0.1);
+}
+
+.pao-header-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.pao-avatar {
+    width: 45px;
+    height: 45px;
+    background: #C5A059;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+}
+
+.pao-header-info h2 { font-size: 14px; letter-spacing: 2px; color: white; text-transform: uppercase; }
+.pao-header-info h2 span { color: #C5A059; }
+.pao-header-info p { font-size: 10px; color: #00A88E; font-weight: 700; letter-spacing: 2px; }
+
+/* --- ÁREA DE MENSAJES --- */
+.pao-messages-display {
+    flex: 1;
+    padding: 40px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+.pao-messages-display::-webkit-scrollbar { display: none; }
+
+.pao-msg-group { display: flex; flex-direction: column; width: 100%; }
+.pao-msg-group.ai { align-items: flex-start; }
+.pao-msg-group.user { align-items: flex-end; }
+
+.pao-bubble-new {
+    padding: 15px 22px;
+    border-radius: 20px;
+    max-width: 75%;
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+.pao-msg-group.ai .pao-bubble-new {
+    background: rgba(255, 255, 255, 0.06);
+    color: #eee;
+    border-left: 4px solid #C5A059;
+}
+
+.pao-msg-group.user .pao-bubble-new {
+    background: #C5A059;
+    color: white;
+    font-weight: 600;
+}
+
+.pao-time-tag { font-size: 0.65rem; margin-top: 5px; opacity: 0.5; }
+
+/* --- BARRA DE ENTRADA --- */
+.pao-input-bar-container {
+    padding: 30px 40px;
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.pao-glass-input {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(197, 160, 89, 0.2);
+    border-radius: 50px;
+    display: flex;
+    padding: 10px 10px 10px 25px;
+    align-items: center;
+}
+
+.pao-glass-input input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: white;
+    outline: none;
+    padding: 10px 0;
+}
+
+.pao-btn-s {
+    width: 45px;
+    height: 45px;
+    background: #C5A059;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.3s;
+}
+
+.pao-btn-s:hover { transform: scale(1.1); background: #00A88E; }
+
+/* --- TYPING INDICATOR --- */
+.pao-bubble-new.typing { display: flex; gap: 5px; padding: 15px 20px; }
+.pao-bubble-new.typing .dot {
+    width: 6px; height: 6px;
+    background: #C5A059;
+    border-radius: 50%;
+    animation: typing-dots 1.4s infinite;
+}
+.pao-bubble-new.typing .dot:nth-child(2) { animation-delay: 0.2s; }
+.pao-bubble-new.typing .dot:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes typing-dots {
+    0%, 100% { transform: translateY(0); opacity: 0.4; }
+    50% { transform: translateY(-5px); opacity: 1; }
+}
+
+/* En tu archivo .css de React */
+.mensaje-pao {
+    white-space: pre-line; /* Esto hace que los \n se conviertan en saltos de línea reales */
+}
