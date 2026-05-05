@@ -8,17 +8,19 @@ import Sidebar from './frontend/components/Sidebar';
 import AdminDashboard from './frontend/pages/AdminDashboard';
 
 // --- IMPORTACIÓN DE LAS PÁGINAS ADMINISTRATIVAS ---
-import Habitaciones from './frontend/pages/Habitaciones';
+import HabitacionesAdmin from './frontend/pages/Habitaciones'; // La renombramos para no confundirla
 import Reservas from './frontend/pages/Reservas';
 import Clientes from './frontend/pages/Clientes';
 import UsuariosAdmin from './frontend/pages/UsuariosAdmin';
-import Reportes from './frontend/pages/Reportes'; // <--- NUEVA IMPORTACIÓN PARA GESTIÓN
+import Reportes from './frontend/pages/Reportes'; 
+
+// --- NUEVA IMPORTACIÓN: LA PÁGINA QUE CONTIENE TUS CARDS ---
+import CatalogoHabitaciones from './frontend/pages/CatalogoHabitaciones'; 
 // --------------------------------------------------------
 
 import logoPaola from './frontend/assets/images/logo.png';
 import './App.css';
 
-// --- Componente Header Global (CLIENTE) ---
 const Navigation = () => {
   const location = useLocation();
 
@@ -32,7 +34,10 @@ const Navigation = () => {
       <nav className="bv-nav">
         <Link to="/" className={location.pathname === "/" ? "active" : ""}>Inicio</Link>
         <Link to="/reservas" className={location.pathname === "/reservas" ? "active" : ""}>Reservas Con IA</Link>
-        <Link to="/habitaciones">Habitaciones</Link>
+        
+        {/* Este enlace ahora buscará la ruta /habitaciones que definimos abajo */}
+        <Link to="/habitaciones" className={location.pathname === "/habitaciones" ? "active" : ""}>Habitaciones</Link>
+        
         <Link to="/servicios">Servicios y Bufete</Link>
         <Link to="/contacto">Contáctanos</Link>
       </nav>
@@ -54,6 +59,11 @@ function App() {
           {/* --- RUTAS PÚBLICAS --- */}
           <Route path="/" element={<Home />} />
           <Route path="/reservas" element={<IA />} />
+          
+          {/* --- AQUÍ ESTÁ LA CONEXIÓN MÁGICA --- */}
+          {/* Cuando el usuario haga clic en "Habitaciones", cargará el catálogo con tus fotos reales */}
+          <Route path="/habitaciones" element={<CatalogoHabitaciones />} />
+          
           <Route path="/login" element={<Login setIsAuthenticated={setIsAuthenticated} />} />
           <Route path="/admin/register" element={<Register />} />
 
@@ -64,26 +74,15 @@ function App() {
               isAuthenticated ? (
                 <div className="admin-layout" style={{ display: 'flex' }}>
                   <Sidebar setIsAuthenticated={setIsAuthenticated} />
-                  <main className="admin-main-content" style={{ 
-                    flex: 1, 
-                    marginLeft: '260px', 
-                    padding: '20px',
-                    minHeight: '100vh',
-                    background: '#f8fafc' 
-                  }}>
+                  <main className="admin-main-content" style={{ flex: 1, marginLeft: '260px', padding: '20px', minHeight: '100vh', background: '#f8fafc' }}>
                     <Routes>
                       <Route path="/" element={<AdminDashboard />} />
-                      {/* Rutas de gestión operativa */}
-                      <Route path="habitaciones" element={<Habitaciones />} />
+                      {/* Rosario sigue teniendo su gestión aquí */}
+                      <Route path="habitaciones" element={<HabitacionesAdmin />} />
                       <Route path="reservas" element={<Reservas />} />
                       <Route path="clientes" element={<Clientes />} />
-                      
-                      {/* Gestión de personal administrativo */}
                       <Route path="usuarios" element={<UsuariosAdmin />} />
-
-                      {/* --- RUTA DE REPORTES Y ESTADÍSTICAS DE GESTIÓN --- */}
                       <Route path="reportes" element={<Reportes />} />
-                      
                     </Routes>
                   </main>
                 </div>

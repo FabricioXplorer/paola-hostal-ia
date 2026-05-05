@@ -37,7 +37,7 @@ app.post('/api/chat', (req, res) => {
     }
 
     const entidades = {
-        fecha: chrono.es.parseDate(mensaje),
+        fecha: chrono.es.parseDate(mensaje, new Date(), { forwardDate: true }),
         personas: msgLower.match(/\d+/) ? msgLower.match(/\d+/)[0] : null,
         tipo_habitacion: null
     };
@@ -129,7 +129,16 @@ app.post('/api/chat', (req, res) => {
         return;
     }
 
+    // BLOQUE C: FECHAS Y CATÁLOGO (Con validación de fecha pasada)
     if (entidades.fecha && sesiones[usuarioId].paso === 'inicio') {
+        const hoy = new Date();
+        hoy.setHours(0, 0, 0, 0); 
+
+        if (entidades.fecha < hoy) {
+            respuestaPao = "Lo siento, no puedo agendar una reserva para una fecha que ya pasó. ¿Para qué fecha (de hoy en adelante) planeas tu visita?";
+            return finalizarInteraccion(mensaje, 'error_fecha_pasada', respuestaPao, entidades, res);
+        }
+
         const f = entidades.fecha.toLocaleDateString('es-ES', { day: 'numeric', month: 'long' });
         sesiones[usuarioId].datos.fecha_ingreso_obj = entidades.fecha; 
         sesiones[usuarioId].paso = 'esperando_fecha_salida';
@@ -140,6 +149,11 @@ app.post('/api/chat', (req, res) => {
     if (sesiones[usuarioId].paso === 'esperando_fecha_salida') {
         const fSalidaDetectada = chrono.es.parseDate(mensaje);
         if (fSalidaDetectada) {
+            if (fSalidaDetectada <= sesiones[usuarioId].datos.fecha_ingreso_obj) {
+                respuestaPao = "La fecha de salida debe ser posterior a la de ingreso. ¿Qué día dejarás el hostal?";
+                return finalizarInteraccion(mensaje, 'error_fecha_salida_invalida', respuestaPao, entidades, res);
+            }
+
             sesiones[usuarioId].datos.fecha_salida_obj = fSalidaDetectada;
             sesiones[usuarioId].paso = 'esperando_habitacion';
             db.query('SELECT tipo, precio_noche FROM habitaciones GROUP BY tipo', (err, rows) => {
@@ -166,14 +180,26 @@ app.post('/api/chat', (req, res) => {
         return;
     }
 
-    if (intencion === 'confirmar' && sesiones[usuarioId].paso === 'confirmando_reserva') {
-        respuestaPao = `¡Excelente! ¿Cuál es tu nombre completo?`;
-        sesiones[usuarioId].paso = 'esperando_nombre';
+    // --- LÓGICA DE INTENCIONES FINALES (CORREGIDA) ---
+    if (intencion === 'confirmar') {
+        if (sesiones[usuarioId].paso === 'confirmando_reserva') {
+            respuestaPao = `¡Excelente! ¿Cuál es tu nombre completo?`;
+            sesiones[usuarioId].paso = 'esperando_nombre';
+        } else if (sesiones[usuarioId].paso === 'inicio') {
+            respuestaPao = "¡Perfecto! Para empezar, ¿en qué fecha planeas tu visita?";
+        } else {
+            // Manejo de confirmación genérica para evitar el bucle de "¿En qué más puedo ayudarte?"
+            respuestaPao = "¡Excelente! Indica la fecha de tu estadía para consultar nuestra disponibilidad.";
+            sesiones[usuarioId].paso = 'inicio';
+        }
+    } else if (intencion === 'disponibilidad' && sesiones[usuarioId].paso === 'inicio') {
+        respuestaPao = "¡Claro que sí! Con gusto te ayudo. ¿Para qué fecha planeas tu visita?";
     } else if (intencion === 'saludo' && sesiones[usuarioId].paso === 'inicio') {
-        respuestaPao = "¡Hola! Soy PAO. ¿Para qué fecha planeas tu visita?";
+        respuestaPao = "¡Hola! Me llamo PAO. ¿Para qué fecha planeas tu visita?";
     } else {
         respuestaPao = "Entiendo. ¿Deseas consultar disponibilidad?";
     }
+
     finalizarInteraccion(mensaje, intencion, respuestaPao, entidades, res);
 });
 
@@ -206,11 +232,8 @@ app.get('/api/administradores-lista', (req, res) => {
     db.query('SELECT id_admin, nombre, usuario, rol, ultimo_acceso FROM administradores ORDER BY rol ASC', (err, results) => res.json(results));
 });
 
-// ================================================================
-// --- MÓDULO DE REPORTES Y ESTADÍSTICAS (CORREGIDO) ---
-// ================================================================
+// --- REPORTES ---
 app.get('/api/reportes-estadisticas', (req, res) => {
-    // Consulta Ingresos por Mes (Forzamos nombres en español)
     const sqlIngresos = `
         SELECT 
             CASE MONTH(fecha_ingreso)
@@ -225,7 +248,6 @@ app.get('/api/reportes-estadisticas', (req, res) => {
         GROUP BY MONTH(fecha_ingreso)
         ORDER BY MONTH(fecha_ingreso) ASC`;
 
-    // Consulta de Resumen para Cards
     const sqlResumen = `
         SELECT 
             (SELECT COUNT(*) FROM reservas WHERE estado_reserva = 'Confirmada') as activas,
@@ -241,7 +263,7 @@ app.get('/api/reportes-estadisticas', (req, res) => {
     });
 });
 
-// --- GESTIÓN DE PERSONAL Y RESERVAS MANUALES ---
+// --- GESTIÓN MANUAL ---
 app.post('/api/registrar-trabajador', (req, res) => {
     const { nombre, usuario, password, rol } = req.body;
     db.query('INSERT INTO administradores (nombre, usuario, password_hash, rol) VALUES (?, ?, ?, ?)', [nombre, usuario, password, rol], () => res.json({ success: true }));

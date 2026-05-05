@@ -8,13 +8,16 @@ classifier.addDocument('buenas tardes', 'saludo');
 classifier.addDocument('que tal', 'saludo');
 classifier.addDocument('hey', 'saludo');
 
-// --- INTENCIÓN: DISPONIBILIDAD ---
-classifier.addDocument('habitaciones disponibles', 'disponibilidad');
-classifier.addDocument('tienes cuartos libres', 'disponibilidad');
-classifier.addDocument('hay espacio para hoy', 'disponibilidad');
-classifier.addDocument('quiero reservar una habitacion', 'disponibilidad');
-classifier.addDocument('busco alojamiento', 'disponibilidad');
-classifier.addDocument('necesito una habitacion', 'disponibilidad');
+// --- INTENCIÓN: DISPONIBILIDAD (Mejorado) ---
+classifier.addDocument('¿tienen habitaciones disponibles?', 'disponibilidad');
+classifier.addDocument('quisiera ver si hay cuartos libres', 'disponibilidad');
+classifier.addDocument('hay espacio para hoy por favor', 'disponibilidad');
+classifier.addDocument('estoy buscando alojamiento en sucre', 'disponibilidad');
+classifier.addDocument('¿que habitaciones tienen libres?', 'disponibilidad');
+classifier.addDocument('quiero hacer una reserva', 'disponibilidad');
+classifier.addDocument('¿tienen disponibilidad para estos dias?', 'disponibilidad');
+classifier.addDocument('necesito un cuarto', 'disponibilidad');
+classifier.addDocument('ver disponibilidad', 'disponibilidad');
 
 // --- INTENCIÓN: PRECIOS ---
 classifier.addDocument('cuanto cuesta', 'precios');

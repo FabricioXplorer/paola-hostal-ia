@@ -5,7 +5,7 @@ const IA = () => {
     const [messages, setMessages] = useState([
         { 
             id: 1, 
-            text: "SISTEMA ACTIVO. Soy PAO, tu asistente inteligente de Paola Hostal. ¿En qué fechas planeas visitarnos en la Ciudad Blanca?", 
+            text: "SISTEMA ACTIVO. Soy PAO, tu asistente inteligente de Paola Hostal.", 
             sender: 'ai',
             time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
         }
