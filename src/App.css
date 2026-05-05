@@ -2,49 +2,80 @@
     position: sticky;
     top: 0;
     width: 100%;
-    background: rgba(0, 15, 45, 0.8); /* Fondo semi-transparente para que no tape el contenido */
+    background: rgba(0, 15, 45, 0.8);
     backdrop-filter: blur(10px);
-    padding: 20px 0;
-    z-index: 100;
+    -webkit-backdrop-filter: blur(10px); /* Soporte para Safari/iOS */
+    padding: 10px 0; /* Reducido ligeramente para ganar espacio vertical */
+    z-index: 1000;
 }
+
 /* --- ESTILOS DEL NAVBAR GLOBAL --- */
 .bv-header-centered {
-    padding: 30px 0;
+    padding: 20px 0;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 20px;
+    gap: 15px;
     z-index: 100;
     width: 100%;
-    /* Agregamos un fondo sutil por si el scroll pasa por debajo */
     background: rgba(0, 15, 45, 0.2);
-    backdrop-filter: blur(5px);
 }
 
 .bv-main-logo {
-    height: 75px; /* Un poco más pequeño para que no quite tanto espacio al chat */
+    height: clamp(50px, 10vw, 75px); /* Logo fluido según el tamaño de pantalla */
     filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));
     transition: 0.3s;
 }
 
 .bv-nav {
     display: flex;
-    gap: 30px;
+    gap: clamp(15px, 3vw, 30px); /* Espaciado fluido entre enlaces */
+    flex-wrap: wrap; /* Permite que los enlaces bajen si no caben */
+    justify-content: center;
+    padding: 0 15px;
 }
 
 .bv-nav a {
     text-decoration: none;
     color: rgba(255, 255, 255, 0.6);
-    font-size: 11px;
+    font-size: clamp(9px, 2vw, 11px); /* Texto legible en móviles pequeños */
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 3px;
+    letter-spacing: 2px; /* Reducido un poco para móviles */
     transition: 0.3s;
     padding-bottom: 5px;
     border-bottom: 2px solid transparent;
+    white-space: nowrap; /* Evita que una palabra se corte a la mitad */
 }
 
 .bv-nav a.active, .bv-nav a:hover {
     color: #C5A059;
     border-bottom-color: #C5A059;
+}
+
+/* --- AJUSTES ESPECÍFICOS PARA MÓVILES (Responsive) --- */
+@media (max-width: 768px) {
+    .global-nav {
+        padding: 5px 0;
+    }
+
+    .bv-header-centered {
+        padding: 15px 0;
+        gap: 10px;
+    }
+
+    .bv-nav {
+        gap: 12px; /* Espacio mínimo para que el usuario pueda tocar con el dedo */
+    }
+
+    .bv-nav a {
+        letter-spacing: 1px; /* Ahorra espacio horizontal */
+    }
+}
+
+/* Optimización para iPhone (Safari) */
+@supports (-webkit-overflow-scrolling: touch) {
+    .global-nav {
+        background: rgba(0, 15, 45, 0.9); /* Un poco más opaco en iOS para mejor legibilidad */
+    }
 }

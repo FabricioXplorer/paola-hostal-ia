@@ -5,7 +5,6 @@ import './CatalogoHabitaciones.css';
 const CatalogoHabitaciones = () => {
     const [habitaciones, setHabitaciones] = useState([]);
 
-    // 1. Definimos la función de carga fuera del useEffect para poder reutilizarla
     const obtenerHabitaciones = () => {
         fetch('http://localhost:5000/api/habitaciones')
             .then(res => res.json())
@@ -14,26 +13,28 @@ const CatalogoHabitaciones = () => {
     };
 
     useEffect(() => {
-        // Ejecución inicial inmediata al cargar el componente
         obtenerHabitaciones();
 
-        // 2. Configuramos el intervalo de actualización automática (cada 15 segundos)
         const intervalo = setInterval(() => {
             console.log("Sincronizando catálogo con la base de datos...");
             obtenerHabitaciones();
         }, 15000); 
 
-        // 3. Limpieza del intervalo cuando el usuario sale de la página
-        // Esto evita fugas de memoria y peticiones innecesarias
         return () => clearInterval(intervalo);
     }, []);
 
     return (
         <div className="catalogo-container">
-            <div className="catalogo-header">
-                <h2>Conoce nuestras instalaciones</h2>
-                <p>Habitaciones diseñadas para tu confort en la ciudad de Sucre</p>
-            </div>
+            {/* ENCABEZADO MEJORADO: Ahora con más aire y mejor contraste */}
+            <header className="catalogo-header">
+                <span className="subtitle-superior">EXPERIENCIA PAOLA HOSTAL</span>
+                <h2 className="titulo-principal">Nuestras Instalaciones</h2>
+                <div className="decoracion-linea"></div>
+                <p className="descripcion-header">
+                    Descubre el equilibrio perfecto entre descanso y tradición en el corazón de Sucre. 
+                    Espacios diseñados para ofrecerte calidez y confort absoluto.
+                </p>
+            </header>
             
             <div className="habitaciones-grid">
                 {habitaciones.length > 0 ? (
@@ -41,7 +42,7 @@ const CatalogoHabitaciones = () => {
                         <HabitacionCard key={hab.id_habitacion} hab={hab} />
                     ))
                 ) : (
-                    <p style={{ textAlign: 'center', color: 'white' }}>Cargando habitaciones disponibles...</p>
+                    <p className="mensaje-carga">Cargando habitaciones disponibles...</p>
                 )}
             </div>
         </div>

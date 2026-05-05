@@ -1,22 +1,23 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, useLocation, Navigate } from 'react-router-dom';
+
+// --- PÁGINAS PÚBLICAS ---
 import Home from './frontend/pages/Home';
 import IA from './frontend/pages/IA';
 import Login from './frontend/pages/Login';
 import Register from './frontend/pages/Register';
+import ServiciosBufete from './frontend/pages/ServiciosBufete'; 
+import SobreNosotros from './frontend/pages/SobreNosotros'; 
+import CatalogoHabitaciones from './frontend/pages/CatalogoHabitaciones'; 
+
+// --- COMPONENTES Y PÁGINAS ADMINISTRATIVAS ---
 import Sidebar from './frontend/components/Sidebar';
 import AdminDashboard from './frontend/pages/AdminDashboard';
-
-// --- IMPORTACIÓN DE LAS PÁGINAS ADMINISTRATIVAS ---
-import HabitacionesAdmin from './frontend/pages/Habitaciones'; // La renombramos para no confundirla
+import HabitacionesAdmin from './frontend/pages/Habitaciones'; 
 import Reservas from './frontend/pages/Reservas';
-import Clientes from './frontend/pages/Clientes';
+import Clientes from './frontend/pages/Clientes'; // Módulo de Cartera de Huéspedes
 import UsuariosAdmin from './frontend/pages/UsuariosAdmin';
 import Reportes from './frontend/pages/Reportes'; 
-
-// --- NUEVA IMPORTACIÓN: LA PÁGINA QUE CONTIENE TUS CARDS ---
-import CatalogoHabitaciones from './frontend/pages/CatalogoHabitaciones'; 
-// --------------------------------------------------------
 
 import logoPaola from './frontend/assets/images/logo.png';
 import './App.css';
@@ -24,6 +25,7 @@ import './App.css';
 const Navigation = () => {
   const location = useLocation();
 
+  // Ocultar navegación en el panel de administración o login
   if (location.pathname.startsWith('/admin') || location.pathname === '/login' || location.pathname === '/admin/register') {
     return null;
   }
@@ -34,12 +36,21 @@ const Navigation = () => {
       <nav className="bv-nav">
         <Link to="/" className={location.pathname === "/" ? "active" : ""}>Inicio</Link>
         <Link to="/reservas" className={location.pathname === "/reservas" ? "active" : ""}>Reservas Con IA</Link>
-        
-        {/* Este enlace ahora buscará la ruta /habitaciones que definimos abajo */}
         <Link to="/habitaciones" className={location.pathname === "/habitaciones" ? "active" : ""}>Habitaciones</Link>
         
-        <Link to="/servicios">Servicios y Bufete</Link>
-        <Link to="/contacto">Contáctanos</Link>
+        <Link 
+          to="/servicios" 
+          className={location.pathname === "/servicios" ? "active" : ""}
+        >
+          Servicios y Bufete
+        </Link>
+        
+        <Link 
+          to="/sobre-nosotros" 
+          className={location.pathname === "/sobre-nosotros" ? "active" : ""}
+        >
+          Sobre nosotros
+        </Link>
       </nav>
     </header>
   );
@@ -59,10 +70,9 @@ function App() {
           {/* --- RUTAS PÚBLICAS --- */}
           <Route path="/" element={<Home />} />
           <Route path="/reservas" element={<IA />} />
-          
-          {/* --- AQUÍ ESTÁ LA CONEXIÓN MÁGICA --- */}
-          {/* Cuando el usuario haga clic en "Habitaciones", cargará el catálogo con tus fotos reales */}
           <Route path="/habitaciones" element={<CatalogoHabitaciones />} />
+          <Route path="/servicios" element={<ServiciosBufete />} />
+          <Route path="/sobre-nosotros" element={<SobreNosotros />} />
           
           <Route path="/login" element={<Login setIsAuthenticated={setIsAuthenticated} />} />
           <Route path="/admin/register" element={<Register />} />
@@ -77,7 +87,6 @@ function App() {
                   <main className="admin-main-content" style={{ flex: 1, marginLeft: '260px', padding: '20px', minHeight: '100vh', background: '#f8fafc' }}>
                     <Routes>
                       <Route path="/" element={<AdminDashboard />} />
-                      {/* Rosario sigue teniendo su gestión aquí */}
                       <Route path="habitaciones" element={<HabitacionesAdmin />} />
                       <Route path="reservas" element={<Reservas />} />
                       <Route path="clientes" element={<Clientes />} />

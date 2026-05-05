@@ -1,0 +1,262 @@
+/* Reportes.css */
+.admin-page {
+    padding: 20px;
+    animation: fadeIn 0.5s ease;
+}
+
+/* Encabezado y Títulos */
+.page-title {
+    font-size: 1.8rem;
+    color: #1e293b;
+    font-weight: 800;
+    margin: 0;
+}
+
+.page-subtitle {
+    color: #64748b;
+    margin-top: 5px;
+}
+
+/* Botón de Impresión Estilizado */
+.btn-print-action {
+    background-color: #1e293b; /* Azul oscuro profesional */
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.btn-print-action:hover {
+    background-color: #334155;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Tarjetas de Estadísticas */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.stat-card {
+    background: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    border: 1px solid #eee;
+    transition: transform 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+}
+
+/* Colores institucionales por tarjeta */
+.gold-border { border-left: 5px solid #C5A059; }
+.purple-border { border-left: 5px solid #8b5cf6; }
+.green-border { border-left: 5px solid #22c55e; }
+.blue-border { border-left: 5px solid #3b82f6; }
+
+.card-header-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.card-label {
+    color: #64748b;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.card-value {
+    font-size: 1.8rem;
+    color: #1e293b;
+    margin: 0;
+}
+
+.card-value small {
+    font-size: 1rem;
+    color: #94a3b8;
+}
+
+/* Gráfica de Tendencia Visual */
+.chart-section {
+    background: white;
+    border-radius: 15px;
+    padding: 25px;
+    margin-bottom: 30px;
+    border: 1px solid #f1f5f9;
+}
+
+.chart-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.bar-container {
+    height: 200px;
+    display: flex;
+    align-items: flex-end;
+    gap: 15px;
+    border-bottom: 2px solid #f1f5f9;
+    padding-bottom: 5px;
+}
+
+.bar-column {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}
+
+.bar-fill {
+    width: 100%;
+    max-width: 35px;
+    background: linear-gradient(to top, #C5A059, #DDA845);
+    border-radius: 6px 6px 0 0;
+    transition: 0.5s ease-out;
+    position: relative;
+}
+
+.bar-value {
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.65rem;
+    font-weight: bold;
+    color: #1e293b;
+}
+
+.bar-month {
+    margin-top: 10px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #64748b;
+}
+
+/* Tabla y Auditoría */
+.table-container {
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    border: 1px solid #f1f5f9;
+}
+
+.audit-status {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: #22c55e;
+    font-weight: 700;
+    font-size: 0.85rem;
+}
+
+/* Filtros */
+.filter-container select {
+    background: transparent;
+    border: none;
+    font-size: 0.9rem;
+    color: #1e293b;
+    font-weight: 600;
+    outline: none;
+    cursor: pointer;
+}
+
+/* Elementos Invisibles en Pantalla */
+.print-only-header, .print-only-footer {
+    display: none;
+}
+
+/* --- ESTILOS DE IMPRESIÓN --- */
+@media print {
+    /* Ocultar Interfaz */
+    nav, .sidebar, .admin-header-flex, button, .no-print, .chart-section {
+        display: none !important;
+    }
+
+    .admin-main-content {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    .printable-content {
+        display: block !important;
+        width: 100%;
+    }
+
+    /* Encabezado de Reporte */
+    .print-only-header {
+        display: block !important;
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    /* Ocultar Ocupación de Tiempo Real (Huéspedes hoy, reservas, libres) */
+    .stats-grid .stat-card:nth-child(2),
+    .stats-grid .stat-card:nth-child(3),
+    .stats-grid .stat-card:nth-child(4) {
+        display: none !important;
+    }
+
+    /* Centrar Financiero */
+    .stats-grid {
+        display: flex !important;
+        justify-content: center;
+        margin-bottom: 40px;
+    }
+
+    .stat-card {
+        width: 300px;
+        border: 1px solid #C5A059 !important;
+        box-shadow: none !important;
+    }
+
+    .table-container {
+        box-shadow: none !important;
+        border: 1px solid #ddd !important;
+    }
+
+    /* Pie de página para Firma */
+    .print-only-footer {
+        display: block !important;
+        margin-top: 100px;
+        text-align: center;
+    }
+
+    .signature-box {
+        text-align: center;
+        width: 250px;
+        margin: 0 auto;
+    }
+
+    .signature-box .line {
+        border-top: 2px solid #333;
+        margin-bottom: 10px;
+    }
+
+    body {
+        background: white !important;
+        font-size: 12pt;
+    }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}

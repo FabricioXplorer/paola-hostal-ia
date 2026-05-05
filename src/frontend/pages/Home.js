@@ -221,8 +221,11 @@ const Home = () => {
               <div className="buffet-badge">
                 <i className="fa-solid fa-circle-check"></i> INCLUIDO EN TODAS TUS RESERVAS
               </div>
-              <button className="bv-btn-buffet-more" onClick={irAHabitaciones}>
-                MÁS DETALLES <i className="fa-solid fa-chevron-right"></i>
+              <button 
+                  className="bv-btn-buffet-more" 
+                  onClick={() => navigate('/servicios')}
+              >
+                  MÁS DETALLES <i className="fa-solid fa-chevron-right"></i>
               </button>
             </div>
           </div>

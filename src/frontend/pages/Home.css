@@ -20,7 +20,6 @@
     flex-direction: column;
 }
 
-
 /* --- HERO CENTRAL (PAO) --- */
 .bv-hero-content {
     text-align: center;
@@ -62,6 +61,13 @@
 }
 
 /* --- BOTONES --- */
+.pao-hero-actions {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
 .bv-btn-reserve-now {
     background: #C5A059;
     color: white;
@@ -73,6 +79,7 @@
     letter-spacing: 2px;
     cursor: pointer;
     transition: 0.4s;
+    min-width: 220px;
 }
 
 .bv-btn-reserve-now:hover {
@@ -91,6 +98,7 @@
     letter-spacing: 2px;
     cursor: pointer;
     transition: 0.3s;
+    min-width: 220px;
 }
 
 .bv-btn-secondary:hover { background: rgba(255,255,255,0.1); }
@@ -121,9 +129,10 @@
     letter-spacing: -1px;
 }
 
+/* MODIFICADO: Grilla forzada a 3 columnas */
 .rooms-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); 
+    grid-template-columns: repeat(3, 1fr); 
     gap: 40px;
     justify-items: center;
 }
@@ -211,11 +220,12 @@
 }
 
 /* --- BLOQUE DE PAO EXPANDIDO --- */
+/* MODIFICADO: Ahora ocupa 2 columnas fijas para alinearse con la grilla de 3 */
 .pao-recommendation-wide {
     grid-column: span 2;
     display: flex;
     align-items: center;
-    padding: 60px;
+    padding: clamp(30px, 5vw, 60px);
     background: linear-gradient(90deg, rgba(197, 160, 89, 0.08) 0%, transparent 100%);
     border-radius: 20px;
     border-left: 3px solid #C5A059;
@@ -325,7 +335,7 @@
 /* Grilla de menú centrada */
 .buffet-menu-grid-centered {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     gap: 30px;
     margin-bottom: 50px;
     width: 100%;
@@ -429,41 +439,75 @@
 
 /* --- RESPONSIVE --- */
 @media (max-width: 1100px) {
+    /* MODIFICADO: Ajuste para tablets para mantener 2 columnas */
+    .rooms-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
     .pao-recommendation-wide {
-        grid-column: span 1;
-        margin-left: 0;
+        grid-column: 1 / -1;
         padding: 40px;
     }
 }
 
-@media (max-width: 992px) {
-    .buffet-menu-grid-centered {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
 @media (max-width: 768px) {
-    .bv-nav { display: none; }
+    .bv-hero-content {
+        padding: 60px 5%;
+    }
+
+    .pao-hero-actions {
+        flex-direction: column;
+        width: 100%;
+        max-width: 320px;
+    }
+
+    .bv-btn-reserve-now, .bv-btn-secondary {
+        width: 100%;
+    }
+
+    /* MODIFICADO: Grilla a 1 columna en móviles */
+    .rooms-grid {
+        grid-template-columns: 1fr;
+    }
+
     .pao-recommendation-wide {
         text-align: center;
         border-left: none;
         border-top: 3px solid #C5A059;
+        flex-direction: column;
+        grid-column: span 1;
     }
+
+    .pao-rec-wrapper {
+        text-align: center;
+    }
+
+    .bv-btn-chat-pao {
+        margin: 0 auto;
+    }
+
     .buffet-overlay-centered {
-        background: rgba(0, 15, 45, 0.85);
         padding: 40px 5%;
     }
+
     .buffet-menu-grid-centered {
         grid-template-columns: 1fr;
         gap: 20px;
     }
+
     .buffet-actions-centered {
         flex-direction: column;
         gap: 15px;
     }
 }
 
-/* --- FOOTER ESTILO WEBLIUM --- */
+/* Fix para Parallax en iOS */
+@supports (-webkit-overflow-scrolling: touch) {
+    .bon-voyage-container, .bv-buffet-section {
+        background-attachment: scroll;
+    }
+}
+
+/* --- FOOTER --- */
 .bv-footer {
     background: #000a1d;
     padding: 80px 7% 40px;
@@ -472,9 +516,26 @@
 
 .footer-content {
     display: grid;
-    grid-template-columns: 1.5fr 1fr 1fr;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 60px;
     margin-bottom: 60px;
+}
+
+@media (max-width: 900px) {
+    .footer-content {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 40px;
+    }
+    .brand-col p {
+        margin: 20px auto;
+    }
+    .footer-socials {
+        justify-content: center;
+    }
+    .footer-column ul li {
+        justify-content: center;
+    }
 }
 
 .brand-col p {
@@ -487,7 +548,7 @@
 
 .footer-logo {
     height: 60px;
-    filter: brightness(0) invert(1); /* Hace el logo blanco para el fondo oscuro */
+    filter: brightness(0) invert(1);
     opacity: 0.8;
 }
 
@@ -523,7 +584,6 @@
     padding-left: 5px;
 }
 
-/* Iconos de Redes Sociales */
 .footer-socials {
     display: flex;
     gap: 15px;
@@ -558,22 +618,4 @@
     font-size: 11px;
     color: rgba(255, 255, 255, 0.3);
     letter-spacing: 1px;
-}
-
-/* Responsive */
-@media (max-width: 900px) {
-    .footer-content {
-        grid-template-columns: 1fr;
-        text-align: center;
-        gap: 40px;
-    }
-    .brand-col p {
-        margin: 20px auto;
-    }
-    .footer-socials {
-        justify-content: center;
-    }
-    .footer-column ul li {
-        justify-content: center;
-    }
 }
