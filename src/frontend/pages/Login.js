@@ -1,6 +1,6 @@
 // src/frontend/pages/Login.js
 import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom'; // Importamos Link para la navegación
+import { useNavigate, Link } from 'react-router-dom';
 import { Lock, User } from 'lucide-react';
 import './Login.css';
 
@@ -24,9 +24,19 @@ const Login = ({ setIsAuthenticated }) => {
       const data = await response.json();
 
       if (data.success) {
+        // 1. Establecer autenticación en el estado de la App
         setIsAuthenticated(true);
+        
+        // 2. Guardar bandera de sesión activa
         localStorage.setItem('auth_pao', 'true');
-        localStorage.setItem('admin_nombre', data.nombre); // Guardamos el nombre para saludar a Rosario
+        
+        // 3. CRÍTICO: Guardar el objeto de usuario completo (id, nombre, rol)
+        // Esto corrige el error de "No tienes superadmin" en el panel de personal
+        localStorage.setItem('user', JSON.stringify(data.user)); 
+        
+        // 4. Guardar nombre por separado para compatibilidad con otros saludos
+        localStorage.setItem('admin_nombre', data.user.nombre); 
+
         navigate('/admin');
       } else {
         setError(data.mensaje);
@@ -66,15 +76,12 @@ const Login = ({ setIsAuthenticated }) => {
         </div>
         <button type="submit" className="login-btn">Ingresar</button>
 
-        {/* --- OPCIÓN PARA REGISTRO DE NUEVO PERSONAL --- */}
         <p style={{ marginTop: '20px', fontSize: '0.9rem', color: '#64748b' }}>
           ¿Eres personal nuevo?{' '}
           <Link to="/admin/register" style={{ color: '#e2b04a', fontWeight: 'bold', textDecoration: 'none' }}>
             Regístrate aquí
           </Link>
         </p>
-        {/* ---------------------------------------------- */}
-        
       </form>
     </div>
   );

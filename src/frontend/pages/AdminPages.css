@@ -74,6 +74,9 @@
   justify-content: center;
   align-items: center;
   z-index: 2000;
+  /* Soporte para Safari y versiones antiguas de iOS */
+  -webkit-backdrop-filter: blur(3px);
+  /* Estándar moderno */
   backdrop-filter: blur(3px);
 }
 

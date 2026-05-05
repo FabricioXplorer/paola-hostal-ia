@@ -26,7 +26,6 @@ db.connect(err => {
     console.log('CONECTADO: PAO ha accedido a la base de datos de Paola Hostal.');
 });
 
-// Memoria temporal para el flujo de la IA
 const sesiones = {};
 
 // ==========================================
@@ -40,7 +39,6 @@ app.post('/api/chat', (req, res) => {
         sesiones[usuarioId] = { paso: 'inicio', datos: {} };
     }
 
-    // Extracción de Entidades
     const entidades = {
         fecha: chrono.es.parseDate(mensaje, new Date(), { forwardDate: true }),
         personas: msgLower.match(/\d+/) ? msgLower.match(/\d+/)[0] : null,
@@ -55,7 +53,6 @@ app.post('/api/chat', (req, res) => {
     const intencion = classifier.classify(msgLower);
     let respuestaPao = "";
 
-    // Lógica de Cancelación por IA
     if (intencion === 'cancelar_reserva') {
         respuestaPao = "Entiendo. Por seguridad, por favor indícame tu CI o Pasaporte para localizar la reserva:";
         sesiones[usuarioId].paso = 'esperando_ci_cancelar';
@@ -90,21 +87,55 @@ app.post('/api/chat', (req, res) => {
         return;
     }
 
-    // Lógica de Registro de Cliente y Reserva Final
+    if (sesiones[usuarioId].paso === 'esperando_fecha_salida' && entidades.fecha) {
+        sesiones[usuarioId].datos.fecha_salida_obj = entidades.fecha;
+        sesiones[usuarioId].paso = 'esperando_tipo';
+        respuestaPao = "¿Qué tipo de habitación buscas? (Simple, Doble, Matrimonial, etc.)";
+        return finalizarInteraccion(mensaje, 'proporciona_fecha_salida', respuestaPao, entidades, res);
+    }
+
+    if (sesiones[usuarioId].paso === 'esperando_tipo' && entidades.tipo_habitacion) {
+        sesiones[usuarioId].datos.tipo = entidades.tipo_habitacion;
+        sesiones[usuarioId].paso = 'esperando_nombre';
+        respuestaPao = `¡Excelente elección! Para registrarte, ¿cuál es tu nombre completo?`;
+        return finalizarInteraccion(mensaje, 'proporciona_tipo', respuestaPao, entidades, res);
+    }
+
+    if (sesiones[usuarioId].paso === 'esperando_nombre') {
+        sesiones[usuarioId].datos.nombre_completo = mensaje;
+        sesiones[usuarioId].paso = 'esperando_documento';
+        respuestaPao = `Mucho gusto, ${mensaje}. Ahora, indícame tu número de CI o Pasaporte:`;
+        return finalizarInteraccion(mensaje, 'proporciona_nombre', respuestaPao, entidades, res);
+    }
+
+    if (sesiones[usuarioId].paso === 'esperando_documento') {
+        sesiones[usuarioId].datos.documento = mensaje;
+        sesiones[usuarioId].paso = 'esperando_telefono';
+        respuestaPao = "Gracias. ¿A qué número de teléfono podemos contactarte?";
+        return finalizarInteraccion(mensaje, 'proporciona_documento', respuestaPao, entidades, res);
+    }
+
+    if (sesiones[usuarioId].paso === 'esperando_telefono') {
+        sesiones[usuarioId].datos.telefono = mensaje;
+        sesiones[usuarioId].paso = 'esperando_email';
+        respuestaPao = "Ya casi terminamos. Por último, ¿cuál es tu correo electrónico?";
+        return finalizarInteraccion(mensaje, 'proporciona_telefono', respuestaPao, entidades, res);
+    }
+
     if (sesiones[usuarioId].paso === 'esperando_email') {
         sesiones[usuarioId].datos.email = mensaje;
         const d = sesiones[usuarioId].datos;
-        const sqlCli = 'INSERT INTO clientes (nombre_completo, documento_identidad, telefono, email) VALUES (?, ?, ?, ?)';
+        const sqlCli = 'INSERT INTO clientes (nombre_completo, documento_identidad, telefono, email) VALUES (?, ?, ?, ?) ON DUPLICATE KEY UPDATE id_cliente=LAST_INSERT_ID(id_cliente)';
         db.query(sqlCli, [d.nombre_completo, d.documento, d.telefono, d.email], (err, resCli) => {
             if (err) return res.json({ texto: "Error al registrar tus datos." });
-            const idCliente = resCli.insertId;
-            db.query('SELECT id_habitacion, numero FROM habitaciones WHERE LOWER(tipo) = LOWER(?) AND estado = "Disponible" LIMIT 1', [d.tipo], (err, resHab) => {
+            const idCliente = resCli.insertId || resCli.lastID;
+            db.query('SELECT id_habitacion, numero, precio FROM habitaciones WHERE LOWER(tipo) = LOWER(?) AND estado = "Disponible" LIMIT 1', [d.tipo], (err, resHab) => {
                 if (!resHab || resHab.length === 0) return res.json({ texto: `Lo siento, no hay disponibilidad para tipo ${d.tipo}.` });
-                const { id_habitacion, numero } = resHab[0];
+                const { id_habitacion, numero, precio } = resHab[0];
                 const sqlRes = 'INSERT INTO reservas (id_cliente, id_habitacion, fecha_ingreso, fecha_salida, monto_total, estado_reserva) VALUES (?, ?, ?, ?, ?, "Confirmada")';
-                db.query(sqlRes, [idCliente, id_habitacion, d.fecha_ingreso_obj, d.fecha_salida_obj, d.monto_total], (errRes) => {
+                db.query(sqlRes, [idCliente, id_habitacion, d.fecha_ingreso_obj, d.fecha_salida_obj, precio], (errRes) => {
                     db.query('UPDATE habitaciones SET estado = "Ocupada" WHERE id_habitacion = ?', [id_habitacion], () => {
-                        respuestaPao = `¡RESERVA EXITOSA! ${d.nombre_completo}, Habitación ${numero}. Total: ${d.monto_total} Bs.`;
+                        respuestaPao = `¡RESERVA EXITOSA! ${d.nombre_completo}, Habitación ${numero}. Total: ${precio} Bs.`;
                         sesiones[usuarioId] = { paso: 'inicio', datos: {} }; 
                         finalizarInteraccion(mensaje, 'reserva_completada', respuestaPao, entidades, res);
                     });
@@ -114,10 +145,6 @@ app.post('/api/chat', (req, res) => {
         return;
     }
 
-    // (Aquí siguen los bloques intermedios de nombre, documento, teléfono ya presentes en tu código original...)
-    // [Se omiten los if de pasos intermedios por brevedad, pero deben ir aquí]
-
-    // Bloque de Fechas y Disponibilidad
     if (entidades.fecha && sesiones[usuarioId].paso === 'inicio') {
         const hoy = new Date();
         hoy.setHours(0, 0, 0, 0); 
@@ -140,9 +167,24 @@ app.post('/api/chat', (req, res) => {
 // ==========================================
 app.post('/api/login', (req, res) => {
     const { usuario, password } = req.body;
-    db.query('SELECT nombre FROM administradores WHERE usuario = ? AND password_hash = ?', [usuario, password], (err, results) => {
-        if (results && results.length > 0) res.json({ success: true, nombre: results[0].nombre });
-        else res.status(401).json({ success: false, mensaje: "Credenciales inválidas" });
+    // Seleccionamos id, nombre Y ROL para que el Frontend sepa quién es quién
+    db.query('SELECT id_admin, nombre, rol FROM administradores WHERE usuario = ? AND password_hash = ?', [usuario, password], (err, results) => {
+        if (results && results.length > 0) {
+            const userFound = results[0];
+            db.query('UPDATE administradores SET ultimo_acceso = NOW() WHERE id_admin = ?', [userFound.id_admin], () => {
+                // Enviamos el objeto de usuario completo para el localStorage
+                res.json({ 
+                    success: true, 
+                    user: {
+                        id_admin: userFound.id_admin,
+                        nombre: userFound.nombre,
+                        rol: userFound.rol
+                    }
+                });
+            });
+        } else {
+            res.status(401).json({ success: false, mensaje: "Credenciales inválidas" });
+        }
     });
 });
 
@@ -160,6 +202,14 @@ app.post('/api/registrar-trabajador', (req, res) => {
     db.query('INSERT INTO administradores (nombre, usuario, password_hash, rol) VALUES (?, ?, ?, ?)', [nombre, usuario, password, rol], () => res.json({ success: true }));
 });
 
+app.delete('/api/eliminar-trabajador/:id', (req, res) => {
+    const { id } = req.params;
+    db.query('DELETE FROM administradores WHERE id_admin = ?', [id], (err, result) => {
+        if (err) return res.status(500).json({ success: false, mensaje: "Error al eliminar trabajador" });
+        res.json({ success: true, mensaje: "Acceso revocado correctamente." });
+    });
+});
+
 // ==========================================
 // 4. MÓDULO: GESTIÓN DE HABITACIONES
 // ==========================================
@@ -172,33 +222,20 @@ app.get('/api/habitaciones', (req, res) => {
 // ==========================================
 app.get('/api/clientes', (req, res) => {
     const sql = `SELECT id_cliente as id, nombre_completo as nombre, documento_identidad as documento, telefono as contacto, email, preferencias 
-                 FROM clientes ORDER BY nombre_completo ASC`;
+                  FROM clientes ORDER BY nombre_completo ASC`;
     db.query(sql, (err, results) => {
         if (err) return res.status(500).json(err);
         res.json(results);
     });
 });
 
-// Ruta para actualizar preferencias aprendidas por la IA o datos de contacto
 app.put('/api/clientes/:id', (req, res) => {
     const { id } = req.params;
     const { nombre, documento, contacto, email } = req.body;
-    
-    // Consulta SQL que actualiza nombre, CI, teléfono y email
-    const sql = `
-        UPDATE clientes 
-        SET nombre_completo = ?, 
-            documento_identidad = ?, 
-            telefono = ?, 
-            email = ? 
-        WHERE id_cliente = ?`;
-    
+    const sql = `UPDATE clientes SET nombre_completo = ?, documento_identidad = ?, telefono = ?, email = ? WHERE id_cliente = ?`;
     db.query(sql, [nombre, documento, contacto, email, id], (err, result) => {
-        if (err) {
-            console.error("Error al actualizar cliente:", err);
-            return res.status(500).json({ error: "No se pudo actualizar el registro." });
-        }
-        res.json({ success: true, mensaje: "Huésped actualizado correctamente." });
+        if (err) return res.status(500).json({ error: "No se pudo actualizar." });
+        res.json({ success: true, mensaje: "Huésped actualizado." });
     });
 });
 
@@ -207,8 +244,8 @@ app.put('/api/clientes/:id', (req, res) => {
 // ==========================================
 app.get('/api/lista-reservas', (req, res) => {
     const sql = `SELECT r.id_reserva, c.nombre_completo, h.numero, r.fecha_ingreso, r.fecha_salida, r.monto_total, r.estado_reserva 
-                 FROM reservas r JOIN clientes c ON r.id_cliente = c.id_cliente 
-                 JOIN habitaciones h ON r.id_habitacion = h.id_habitacion ORDER BY r.id_reserva DESC`;
+                  FROM reservas r JOIN clientes c ON r.id_cliente = c.id_cliente 
+                  JOIN habitaciones h ON r.id_habitacion = h.id_habitacion ORDER BY r.id_reserva DESC`;
     db.query(sql, (err, results) => res.json(results));
 });
 
@@ -233,12 +270,11 @@ app.put('/api/cancelar-reserva/:id', (req, res) => {
         });
     });
 });
-// ==========================================
+
 // ==========================================
 // 7. MÓDULO: REPORTES Y ESTADÍSTICAS
 // ==========================================
 app.get('/api/reportes-estadisticas', (req, res) => {
-    // 1. Consulta para la tabla inferior: Clientes Atendidos (Total histórico registrado)
     const sqlIngresos = `
         SELECT 
             CASE MONTH(fecha_ingreso)
@@ -248,20 +284,18 @@ app.get('/api/reportes-estadisticas', (req, res) => {
                 WHEN 10 THEN 'Octubre' WHEN 11 THEN 'Noviembre' WHEN 12 THEN 'Diciembre'
             END as mes, 
             SUM(monto_total) as total,
-            (SELECT COUNT(*) FROM clientes) as clientes_mes -- Muestra los 18 registrados aquí
+            (SELECT COUNT(*) FROM clientes) as clientes_mes 
         FROM reservas 
         WHERE estado_reserva != 'Cancelada'
         GROUP BY MONTH(fecha_ingreso)
         ORDER BY MONTH(fecha_ingreso) ASC`;
 
-    // 2. Consulta para tarjetas superiores: Huéspedes Totales (Ocupando habitación actualmente)
     const sqlResumen = `
         SELECT 
             (SELECT COUNT(*) FROM reservas WHERE estado_reserva = 'Confirmada') as activas,
             (SELECT COALESCE(SUM(monto_total), 0) FROM reservas WHERE estado_reserva != 'Cancelada') as ingresos_totales,
             (SELECT COUNT(*) FROM habitaciones WHERE estado = 'Disponible') as habit_libres,
             (SELECT COUNT(DISTINCT id_cliente) FROM reservas WHERE estado_reserva = 'Confirmada') as total_clientes`; 
-            // ^ Este contará solo a los que tienen reserva confirmada (ocupantes actuales)
 
     db.query(sqlIngresos, (err, ingresos) => {
         if (err) return res.status(500).json(err);
@@ -271,9 +305,7 @@ app.get('/api/reportes-estadisticas', (req, res) => {
         });
     });
 });
-// ==========================================
-// 8. FUNCIONES AUXILIARES Y SERVIDOR
-// ==========================================
+
 function finalizarInteraccion(frase, intencion, respuesta, entidades, res) {
     db.query('INSERT INTO memoria_ia (frase_usuario, intencion_detectada, entidades_json, respuesta_pao) VALUES (?, ?, ?, ?)', 
     [frase, intencion, JSON.stringify(entidades), respuesta], () => { if (!res.headersSent) res.json({ texto: respuesta }); });
