@@ -1,0 +1,359 @@
+/* --- Reportes.css - Gestión de Estadísticas Paola Hostal --- */
+
+.admin-page {
+    padding: 20px;
+    animation: fadeIn 0.5s ease;
+    background-color: #f8fafc;
+    min-height: 100vh;
+}
+
+/* Encabezado y Títulos */
+.page-title {
+    font-size: 1.8rem;
+    color: #1e293b;
+    font-weight: 800;
+    margin: 0;
+}
+
+.page-subtitle {
+    color: #64748b;
+    margin-top: 5px;
+    font-size: 0.95rem;
+}
+
+/* --- CABECERA Y FILTROS --- */
+.admin-header-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.action-buttons-group {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.filter-container {
+    background: white;
+    border: 2px solid #f1f5f9;
+    padding: 8px 15px;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    transition: border-color 0.3s;
+}
+
+.filter-container:hover {
+    border-color: #C5A059;
+}
+
+.filter-container select {
+    background: transparent;
+    border: none;
+    font-size: 0.9rem;
+    color: #1e293b;
+    font-weight: 600;
+    outline: none;
+    cursor: pointer;
+}
+
+.select-mes-desplegable {
+    border: none;
+    outline: none;
+    background: transparent;
+    color: #1e293b;
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    padding-right: 5px;
+    text-transform: capitalize;
+}
+
+/* Botón Ovalado de Alternancia */
+.btn-toggle-report {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: #C5A059;
+    color: white;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(197, 160, 89, 0.2);
+}
+
+.btn-toggle-report:hover {
+    background-color: #b08d4a;
+    transform: translateY(-1px);
+}
+
+.btn-toggle-report.active {
+    background-color: #1e293b;
+    box-shadow: 0 4px 6px rgba(30, 41, 59, 0.2);
+}
+
+/* Botón de Impresión Estilizado */
+.btn-print-action {
+    background-color: #1e293b;
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.btn-print-action:hover {
+    background-color: #334155;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Tarjetas de Estadísticas */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.stat-card {
+    background: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    border: 1px solid #eee;
+    transition: transform 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+}
+
+.gold-border { border-left: 5px solid #C5A059; }
+.purple-border { border-left: 5px solid #8b5cf6; }
+.green-border { border-left: 5px solid #22c55e; }
+.blue-border { border-left: 5px solid #3b82f6; }
+
+.card-header-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.card-label {
+    color: #64748b;
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+}
+
+.card-value {
+    font-size: 1.8rem;
+    color: #1e293b;
+    font-weight: 800;
+    margin: 0;
+}
+
+.card-value small {
+    font-size: 1rem;
+    color: #94a3b8;
+}
+
+/* --- GRÁFICA DE TENDENCIA (LÍNEAS) --- */
+.chart-section {
+    background: white;
+    border-radius: 15px;
+    padding: 25px;
+    margin-bottom: 30px;
+    border: 1px solid #f1f5f9;
+}
+
+.chart-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.chart-header h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    color: #1e293b;
+}
+
+.chart-visual-container {
+    width: 100%;
+    padding: 10px 0;
+    overflow-x: auto;
+}
+
+.svg-line-chart {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.path-line {
+    stroke-dasharray: 2000;
+    stroke-dashoffset: 2000;
+    animation: drawLine 2.5s forwards ease-in-out;
+}
+
+@keyframes drawLine {
+    to { stroke-dashoffset: 0; }
+}
+
+.node-text {
+    font-size: 10px;
+    font-weight: 800;
+    fill: #1e293b;
+}
+
+.axis-text {
+    font-size: 11px;
+    font-weight: 600;
+    fill: #94a3b8;
+    text-transform: uppercase;
+}
+
+.chart-node circle {
+    transition: r 0.3s ease;
+}
+
+.chart-node:hover circle {
+    r: 7;
+}
+
+/* Tabla y Auditoría */
+.table-container {
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    border: 1px solid #f1f5f9;
+}
+
+.table-header-title {
+    padding: 15px 20px;
+    background: #f8fafc;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.table-header-title h3 {
+    margin: 0;
+    font-size: 1rem;
+    color: #1e293b;
+}
+
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.admin-table th {
+    background: #f8fafc;
+    padding: 12px 20px;
+    text-align: left;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    color: #64748b;
+    border-bottom: 2px solid #e2e8f0;
+}
+
+.admin-table td {
+    padding: 14px 20px;
+    border-bottom: 1px solid #f1f5f9;
+    font-size: 0.9rem;
+    color: #334155;
+}
+
+.audit-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    color: #22c55e;
+    background: #f0fdf4;
+    padding: 4px 10px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 0.75rem;
+}
+
+/* Elementos Invisibles en Pantalla */
+.print-only-header, .print-only-footer {
+    display: none;
+}
+
+/* --- ESTILOS DE IMPRESIÓN ACTUALIZADOS --- */
+@media print {
+    /* Quitamos .chart-section de aquí para que SÍ se imprima */
+    nav, .sidebar, .admin-header-flex, button, .no-print {
+        display: none !important;
+    }
+
+    .admin-main-content { margin: 0 !important; padding: 0 !important; }
+    .printable-content { display: block !important; width: 100%; }
+
+    .print-only-header {
+        display: block !important;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    /* Ajuste para que la gráfica ocupe el ancho de la hoja */
+    .chart-section {
+        display: block !important;
+        border: 1px solid #C5A059 !important;
+        margin-bottom: 30px;
+        break-inside: avoid; /* Evita que la gráfica se corte entre dos páginas */
+    }
+
+    .svg-line-chart {
+        width: 100% !important;
+        height: auto !important;
+    }
+
+    /* Ocultamos las tarjetas pequeñas para ahorrar tinta, dejando solo la de Recaudación */
+    .stats-grid .stat-card:nth-child(2),
+    .stats-grid .stat-card:nth-child(3),
+    .stats-grid .stat-card:nth-child(4) {
+        display: none !important;
+    }
+
+    .stats-grid {
+        display: flex !important;
+        justify-content: center;
+        margin-bottom: 30px;
+    }
+
+    .stat-card {
+        width: 100%;
+        max-width: 350px;
+        border: 1px solid #C5A059 !important;
+    }
+
+    .table-container { 
+        box-shadow: none !important; 
+        border: 1px solid #ddd !important; 
+        page-break-before: auto;
+    }
+
+    .print-only-footer {
+        display: block !important;
+        margin-top: 50px;
+        text-align: center;
+    }
+}

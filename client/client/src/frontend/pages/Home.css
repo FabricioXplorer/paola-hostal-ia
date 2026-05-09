@@ -1,0 +1,615 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap');
+
+/* --- RESET Y BASES --- */
+* { 
+    margin: 0; 
+    padding: 0; 
+    box-sizing: border-box; 
+}
+
+.bon-voyage-container {
+    background-image: linear-gradient(rgba(0, 15, 45, 0.75), rgba(0, 15, 45, 0.75)), url('../assets/images/home2.jpeg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    min-height: 100vh;
+    width: 100%;
+    color: white;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    display: flex;
+    flex-direction: column;
+}
+
+/* --- HEADER CENTRADO --- */
+.bv-header-centered {
+    padding: 40px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 25px;
+    z-index: 10;
+}
+
+.bv-main-logo {
+    height: 85px;
+    filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));
+}
+
+.bv-nav {
+    display: flex;
+    gap: 40px;
+}
+
+.bv-nav a {
+    text-decoration: none;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    transition: 0.3s;
+    padding-bottom: 5px;
+    border-bottom: 2px solid transparent;
+}
+
+.bv-nav a.active, .bv-nav a:hover {
+    color: #C5A059;
+    border-bottom-color: #C5A059;
+}
+
+/* --- HERO CENTRAL (PAO) --- */
+.bv-hero-content {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 80px 10%;
+    animation: fadeIn 1.5s ease;
+}
+
+.pao-badge {
+    color: #00A88E;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 4px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.pao-title {
+    font-size: clamp(45px, 7vw, 85px);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -2px;
+    margin-bottom: 20px;
+}
+
+.pao-title span { color: #C5A059; }
+
+.pao-subtitle {
+    font-size: clamp(14px, 1.5vw, 19px);
+    font-weight: 300;
+    color: rgba(255,255,255,0.7);
+    line-height: 1.6;
+    margin-bottom: 40px;
+    max-width: 700px;
+}
+
+/* --- BOTONES --- */
+.bv-btn-reserve-now {
+    background: #C5A059;
+    color: white;
+    border: none;
+    padding: 20px 45px;
+    border-radius: 50px;
+    font-weight: 800;
+    font-size: 11px;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: 0.4s;
+}
+
+.bv-btn-reserve-now:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(197, 160, 89, 0.4);
+}
+
+.bv-btn-secondary {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.3);
+    color: white;
+    padding: 20px 45px;
+    border-radius: 50px;
+    font-weight: 800;
+    font-size: 11px;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.bv-btn-secondary:hover { background: rgba(255,255,255,0.1); }
+
+/* --- SECCIÓN HABITACIONES PREVIEW --- */
+.bv-rooms-preview {
+    padding: 100px 7%;
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.section-tag {
+    color: #C5A059;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 4px;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.section-title {
+    font-size: clamp(28px, 4vw, 36px);
+    font-weight: 700;
+    letter-spacing: -1px;
+}
+
+.rooms-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); 
+    gap: 40px;
+    justify-items: center;
+}
+
+.room-card {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+    overflow: hidden;
+    transition: 0.4s;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    width: 100%;
+}
+
+.room-card:hover {
+    transform: translateY(-15px);
+    background: rgba(255, 255, 255, 0.08);
+    border-color: #C5A059;
+}
+
+.room-img-container {
+    height: 250px;
+    position: relative;
+    overflow: hidden;
+}
+
+.room-img-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: 0.5s;
+}
+
+.room-card:hover .room-img-container img {
+    transform: scale(1.1);
+}
+
+.room-price-tag {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: #C5A059;
+    color: white;
+    padding: 8px 15px;
+    border-radius: 50px;
+    font-weight: 800;
+    font-size: 12px;
+    z-index: 2;
+}
+
+.room-info {
+    padding: 30px;
+}
+
+.room-info h3 {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.room-info p {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.6);
+    line-height: 1.6;
+    margin-bottom: 25px;
+}
+
+.bv-btn-info {
+    background: transparent;
+    border: 1px solid #C5A059;
+    color: #C5A059;
+    padding: 10px 20px;
+    border-radius: 50px;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.bv-btn-info:hover {
+    background: #C5A059;
+    color: white;
+}
+
+/* --- BLOQUE DE PAO EXPANDIDO --- */
+.pao-recommendation-wide {
+    grid-column: span 2;
+    display: flex;
+    align-items: center;
+    padding: 60px;
+    background: linear-gradient(90deg, rgba(197, 160, 89, 0.08) 0%, transparent 100%);
+    border-radius: 20px;
+    border-left: 3px solid #C5A059;
+    width: 100%;
+}
+
+.pao-rec-wrapper {
+    max-width: 600px;
+    text-align: left;
+}
+
+.pao-rec-title {
+    font-size: clamp(30px, 4vw, 48px);
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 25px;
+    letter-spacing: -1.5px;
+}
+
+.pao-rec-title span { color: #C5A059; }
+
+.pao-rec-subtitle {
+    font-size: 17px;
+    font-weight: 300;
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 40px;
+}
+
+.bv-btn-chat-pao {
+    background: #00A88E;
+    color: white;
+    border: none;
+    padding: 18px 40px;
+    border-radius: 50px;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: 0.4s;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    text-transform: uppercase;
+}
+
+.bv-btn-chat-pao:hover {
+    transform: translateX(10px);
+    box-shadow: 0 10px 25px rgba(0, 168, 142, 0.3);
+}
+
+/* --- SECCIÓN DESAYUNO BUFETE (CENTRADA) --- */
+.bv-buffet-section {
+    position: relative;
+    width: 100%;
+    min-height: 600px;
+    background-image: url('https://images.unsplash.com/photo-1533089860892-a7c6f0a88666?auto=format&fit=crop&w=1500');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    margin: 80px 0;
+}
+
+.buffet-overlay-centered {
+    background: rgba(0, 15, 45, 0.75);
+    min-height: 600px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 60px 7%;
+}
+
+.buffet-content-centered {
+    max-width: 900px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.buffet-tag {
+    color: #C5A059;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 4px;
+    display: block;
+    margin-bottom: 20px;
+}
+
+.buffet-title {
+    font-size: clamp(32px, 5vw, 55px);
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+}
+
+.buffet-description {
+    font-size: 18px;
+    font-weight: 300;
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 1.6;
+    margin-bottom: 45px;
+    max-width: 700px;
+}
+
+/* Grilla de menú centrada */
+.buffet-menu-grid-centered {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px;
+    margin-bottom: 50px;
+    width: 100%;
+}
+
+.menu-category h4 {
+    color: #C5A059;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.menu-category p {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.4;
+}
+
+/* Acciones y Botones Bufete Centrados */
+.buffet-actions-centered {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 25px;
+    flex-wrap: wrap;
+}
+
+.buffet-badge {
+    background: rgba(197, 160, 89, 0.2);
+    border: 1px solid #C5A059;
+    color: #C5A059;
+    padding: 12px 25px;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.bv-btn-buffet-more {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #C5A059;
+    padding: 12px 25px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.bv-btn-buffet-more:hover {
+    background: #C5A059;
+    color: white;
+}
+
+/* --- PUNTO ANIMADO --- */
+.pao-dot {
+    width: 8px;
+    height: 8px;
+    background-color: #00A88E;
+    border-radius: 50%;
+    display: inline-block;
+    box-shadow: 0 0 8px rgba(0, 168, 142, 0.8);
+    animation: pao-pulse 2s infinite ease-in-out;
+}
+
+.pao-badge-mini {
+    color: #00A88E;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 3px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* --- ANIMACIONES --- */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pao-pulse {
+    0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 168, 142, 0.7); }
+    70% { transform: scale(1.1); box-shadow: 0 0 0 12px rgba(0, 168, 142, 0); }
+    100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 168, 142, 0); }
+}
+
+/* --- RESPONSIVE --- */
+@media (max-width: 1100px) {
+    .pao-recommendation-wide {
+        grid-column: span 1;
+        margin-left: 0;
+        padding: 40px;
+    }
+}
+
+@media (max-width: 992px) {
+    .buffet-menu-grid-centered {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .bv-nav { display: none; }
+    .pao-recommendation-wide {
+        text-align: center;
+        border-left: none;
+        border-top: 3px solid #C5A059;
+    }
+    .buffet-overlay-centered {
+        background: rgba(0, 15, 45, 0.85);
+        padding: 40px 5%;
+    }
+    .buffet-menu-grid-centered {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    .buffet-actions-centered {
+        flex-direction: column;
+        gap: 15px;
+    }
+}
+
+/* --- FOOTER ESTILO WEBLIUM --- */
+.bv-footer {
+    background: #000a1d;
+    padding: 80px 7% 40px;
+    border-top: 1px solid rgba(197, 160, 89, 0.2);
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr;
+    gap: 60px;
+    margin-bottom: 60px;
+}
+
+.brand-col p {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.5);
+    line-height: 1.6;
+    margin: 20px 0;
+    max-width: 300px;
+}
+
+.footer-logo {
+    height: 60px;
+    filter: brightness(0) invert(1); /* Hace el logo blanco para el fondo oscuro */
+    opacity: 0.8;
+}
+
+.footer-column h4 {
+    color: #C5A059;
+    font-size: 12px;
+    letter-spacing: 3px;
+    margin-bottom: 25px;
+    text-transform: uppercase;
+}
+
+.footer-column ul {
+    list-style: none;
+}
+
+.footer-column ul li {
+    margin-bottom: 15px;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.6);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.footer-column ul li a {
+    text-decoration: none;
+    color: inherit;
+    transition: 0.3s;
+}
+
+.footer-column ul li a:hover {
+    color: #C5A059;
+    padding-left: 5px;
+}
+
+/* Iconos de Redes Sociales */
+.footer-socials {
+    display: flex;
+    gap: 15px;
+}
+
+.footer-socials a {
+    width: 40px;
+    height: 40px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    color: white;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.footer-socials a:hover {
+    background: #C5A059;
+    border-color: #C5A059;
+    transform: translateY(-5px);
+}
+
+.footer-bottom {
+    text-align: center;
+    padding-top: 40px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.footer-bottom p {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.3);
+    letter-spacing: 1px;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    .footer-content {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 40px;
+    }
+    .brand-col p {
+        margin: 20px auto;
+    }
+    .footer-socials {
+        justify-content: center;
+    }
+    .footer-column ul li {
+        justify-content: center;
+    }
+}

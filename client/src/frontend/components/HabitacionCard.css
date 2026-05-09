@@ -1,0 +1,251 @@
+/* --- CONTENEDOR PRINCIPAL --- */
+.card-personalizada {
+    background: #fff;
+    border-radius: 20px;
+    overflow: hidden;
+    border: 1px solid #e1e8ed;
+    transition: all 0.4s ease;
+    position: relative;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+.contenedor-foto {
+    position: relative;
+    height: 220px;
+    overflow: hidden;
+}
+
+.foto-real {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.card-personalizada:hover .foto-real {
+    transform: scale(1.1);
+}
+
+/* --- NUEVA ZONA INTERACTIVA DIVIDIDA --- */
+.zona-interactiva {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 5;
+}
+
+.contenedor-foto:hover .zona-interactiva {
+    opacity: 1;
+}
+
+.btn-interaccion {
+    flex: 1; /* Divide la imagen exactamente a la mitad */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+/* Mitad Izquierda: Ampliar */
+.btn-interaccion.ampliar {
+    background: rgba(44, 62, 80, 0.7); /* Azul oscuro traslúcido */
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Mitad Derecha: Detalles */
+.btn-interaccion.detalles {
+    background: rgba(39, 174, 96, 0.7); /* Verde traslúcido */
+}
+
+.btn-interaccion:hover {
+    background: rgba(0, 0, 0, 0.85);
+}
+
+.icono-btn {
+    font-size: 2.2rem;
+    margin-bottom: 5px;
+}
+
+.btn-interaccion small {
+    font-size: 0.65rem;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+}
+
+/* --- BADGES Y PRECIO --- */
+.badge-disponibilidad {
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+    padding: 4px 12px;
+    border-radius: 6px;
+    font-size: 0.7rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: white;
+    z-index: 2;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+.estado-disponible { background-color: #27ae60; }
+.estado-ocupado { background-color: #e74c3c; }
+.estado-mantenimiento { background-color: #f39c12; }
+
+.precio-flotante {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    background: #27ae60;
+    color: white;
+    padding: 5px 15px;
+    border-radius: 50px;
+    font-weight: bold;
+    font-size: 0.85rem;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    z-index: 2;
+}
+
+/* --- CONTENIDO DE TEXTO --- */
+.card-contenido {
+    padding: 20px;
+}
+
+.categoria-label {
+    display: block;
+    color: #3498db;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+}
+
+.numero-hab {
+    margin: 0;
+    color: #2c3e50;
+    font-size: 1.25rem;
+}
+
+.detalle-extra {
+    max-height: 0;
+    overflow: hidden;
+    transition: all 0.5s ease-in-out;
+    opacity: 0;
+}
+
+.detalle-extra.visible {
+    max-height: 400px;
+    padding: 15px 0;
+    opacity: 1;
+}
+
+.descripcion-texto {
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: #7f8c8d;
+    margin-bottom: 15px;
+}
+
+/* --- BOTONES DE ACCIÓN --- */
+.btn-pao-info {
+    width: 100%;
+    background: transparent;
+    color: #2c3e50;
+    border: 2px solid #2c3e50;
+    padding: 12px;
+    border-radius: 12px;
+    margin-top: 15px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.btn-pao-info:hover {
+    background: #2c3e50;
+    color: #fff;
+    transform: translateY(-2px);
+}
+
+.btn-bloqueado {
+    width: 100%;
+    background: #f1f2f6;
+    color: #a4b0be;
+    border: 1px solid #dfe4ea;
+    padding: 12px;
+    border-radius: 12px;
+    margin-top: 15px;
+    cursor: not-allowed;
+    font-weight: 600;
+}
+
+/* --- MODAL DE VISUALIZACIÓN --- */
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(0, 0, 0, 0.9);
+    z-index: 99999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* Compatibilidad Safari/iOS */
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    animation: fadeIn 0.3s ease;
+}
+
+.modal-contenido {
+    background: white;
+    padding: 15px;
+    border-radius: 15px;
+    position: relative;
+    max-width: 90%;
+    max-height: 90%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    animation: scaleUp 0.3s ease;
+}
+
+.foto-ampliada {
+    max-width: 100%;
+    max-height: 75vh;
+    border-radius: 10px;
+    object-fit: contain;
+}
+
+.modal-info {
+    margin-top: 15px;
+    text-align: center;
+}
+
+.cerrar-modal {
+    position: absolute;
+    top: -50px;
+    right: 0;
+    font-size: 45px;
+    color: white;
+    cursor: pointer;
+}
+
+/* --- ANIMACIONES --- */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes scaleUp {
+    from { transform: scale(0.8); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}

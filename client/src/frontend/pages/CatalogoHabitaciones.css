@@ -1,0 +1,68 @@
+/* CONTENEDOR GENERAL */
+.catalogo-container {
+    padding: 60px 20px;
+    max-width: 1300px;
+    margin: 0 auto;
+    min-height: 100vh;
+}
+
+/* ENCABEZADO (HERO) REESTRUCTURADO */
+.catalogo-header {
+    text-align: center;
+    margin-bottom: 60px; /* Espacio amplio antes de los cards */
+    padding: 20px 0;
+}
+
+.subtitle-superior {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 3px;
+    color: #3498db; /* Azul para resaltar en fondos oscuros */
+    margin-bottom: 12px;
+    text-transform: uppercase;
+}
+
+.titulo-principal {
+    font-size: 3rem; /* Título imponente */
+    font-weight: 800;
+    color: #ffffff; 
+    margin: 0;
+    letter-spacing: -1px;
+}
+
+.decoracion-linea {
+    width: 60px;
+    height: 4px;
+    background: #27ae60; /* Verde que conecta con el estado Disponible */
+    margin: 20px auto;
+    border-radius: 10px;
+}
+
+.descripcion-header {
+    font-size: 1.15rem;
+    color: #bdc3c7; /* Gris suave para lectura descansada */
+    max-width: 650px;
+    margin: 0 auto;
+    line-height: 1.7;
+}
+
+/* GRID DE HABITACIONES */
+.habitaciones-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 35px;
+    padding-bottom: 80px;
+}
+
+/* ESTADOS DE CARGA Y ERROR */
+.mensaje-carga, .no-datos {
+    grid-column: 1 / -1; /* Centra el mensaje en todo el grid */
+    text-align: center;
+    padding: 100px 20px;
+    font-size: 1.3rem;
+    color: #ecf0f1;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 20px;
+    border: 1px dashed rgba(255, 255, 255, 0.2);
+}

@@ -1,22 +1,37 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import './Home.css';
 import logoPaola from '../assets/images/logo.png';
 
 const Home = () => {
+  const navigate = useNavigate();
+
+  // Función para redirigir a la vista de IA
+  const irAReservasIA = (e) => {
+    if (e) e.preventDefault();
+    navigate('/reservas');
+  };
+
+  // Función para redirigir al catálogo de habitaciones
+  const irAHabitaciones = () => {
+    navigate('/habitaciones');
+  };
+
+  // FUNCIÓN PARA CARGAR IMÁGENES REALES
+  const getRoomImage = (tipo) => {
+    try {
+      return require(`../assets/images/habitaciones/${tipo.toLowerCase()}.jpeg`);
+    } catch (err) {
+      try {
+        return require(`../assets/images/habitaciones/${tipo.toLowerCase()}.jpg`);
+      } catch (err2) {
+        return "https://via.placeholder.com/500x350?text=Paola+Hostal+Room";
+      }
+    }
+  };
+
   return (
     <div className="bon-voyage-container">
-      {/* 1. HEADER CENTRADO */}
-      <header className="bv-header-centered">
-        <img src={logoPaola} alt="Paola Hostal" className="bv-main-logo" />
-        <nav className="bv-nav">
-          <a href="/" className="active">Inicio</a>
-          <a href="/reservas">Reservas</a>
-          <a href="/habitaciones">Habitaciones</a>
-          <a href="/servicios">Servicios y Bufete</a>
-          <a href="/contacto">Contáctanos</a>
-        </nav>
-      </header>
-
       {/* 2. CONTENIDO CENTRAL (PAO) */}
       <main className="bv-hero-content">
         <div className="pao-badge">
@@ -31,12 +46,12 @@ const Home = () => {
           para tu mejor estancia en la Ciudad Blanca.
         </p>
         <div className="pao-hero-actions">
-          <button className="bv-btn-reserve-now">RESERVAR AHORA</button>
-          <button className="bv-btn-secondary">VER HABITACIONES</button>
+          <button className="bv-btn-reserve-now" onClick={irAReservasIA}>RESERVAR AHORA</button>
+          <button className="bv-btn-secondary" onClick={irAHabitaciones}>VER HABITACIONES</button>
         </div>
       </main>
 
-      {/* 3. SECCIÓN HABITACIONES INMERSIVAS (Impacto Visual) */}
+      {/* 3. SECCIÓN HABITACIONES INMERSIVAS */}
       <section className="bv-rooms-preview">
         <div className="section-header">
           <span className="section-tag">NUESTROS AMBIENTES</span>
@@ -44,94 +59,108 @@ const Home = () => {
         </div>
 
         <div className="rooms-grid">
-          {/* 1. Simple - Estilo Card */}
+          {/* 1. Simple */}
           <div className="room-card">
             <div className="room-img-container">
-              <img src="https://images.unsplash.com/photo-1590490360182-c33d57733427?w=500" alt="Simple" />
+              <img src={getRoomImage('simple')} alt="Habitación Simple" />
               <div className="room-price-tag">190 Bs.</div>
             </div>
             <div className="room-info">
               <h3>Habitación Simple</h3>
               <p>Confort individual con escritorio y baño privado.</p>
-              <button className="bv-btn-info">MÁS INFO <i className="fa-solid fa-arrow-right"></i></button>
+              <button className="bv-btn-info" onClick={irAHabitaciones}>
+                MÁS INFO <i className="fa-solid fa-arrow-right"></i>
+              </button>
             </div>
           </div>
 
-          {/* 2. Doble - Estilo Card */}
+          {/* 2. Doble */}
           <div className="room-card">
             <div className="room-img-container">
-              <img src="https://images.unsplash.com/photo-1566665797739-1674de7a421a?w=500" alt="Doble" />
+              <img src={getRoomImage('doble')} alt="Habitación Doble" />
               <div className="room-price-tag">280 Bs.</div>
             </div>
             <div className="room-info">
               <h3>Habitación Doble</h3>
               <p>Espacio compartido con camas premium y vista al patio.</p>
-              <button className="bv-btn-info">MÁS INFO <i className="fa-solid fa-arrow-right"></i></button>
+              <button className="bv-btn-info" onClick={irAHabitaciones}>
+                MÁS INFO <i className="fa-solid fa-arrow-right"></i>
+              </button>
             </div>
           </div>
 
-          {/* 3. Matrimonial - Estilo Card */}
+          {/* 3. Matrimonial */}
           <div className="room-card">
             <div className="room-img-container">
-              <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=500" alt="Matrimonial" />
+              <img src={getRoomImage('matrimonial')} alt="Habitación Matrimonial" />
               <div className="room-price-tag">280 Bs.</div>
             </div>
             <div className="room-info">
               <h3>Habitación Matrimonial</h3>
               <p>Elegancia y privacidad para una estancia inolvidable.</p>
-              <button className="bv-btn-info">MÁS INFO <i className="fa-solid fa-arrow-right"></i></button>
+              <button className="bv-btn-info" onClick={irAHabitaciones}>
+                MÁS INFO <i className="fa-solid fa-arrow-right"></i>
+              </button>
             </div>
           </div>
 
           {/* 4. Triple */}
           <div className="room-card">
             <div className="room-img-container">
-              <img src="https://images.unsplash.com/photo-1544124499-58912cbddaad?w=500" alt="Triple" />
+              <img src={getRoomImage('triple')} alt="Habitación Triple" />
               <div className="room-price-tag">380 Bs.</div>
             </div>
             <div className="room-info">
               <h3>Habitación Triple</h3>
               <p>Amplio espacio para grupos o amigos con total comodidad.</p>
-              <button className="bv-btn-info">MÁS INFO <i className="fa-solid fa-arrow-right"></i></button>
+              <button className="bv-btn-info" onClick={irAHabitaciones}>
+                MÁS INFO <i className="fa-solid fa-arrow-right"></i>
+              </button>
             </div>
           </div>
 
           {/* 5. Cuádruple */}
           <div className="room-card">
             <div className="room-img-container">
-              <img src="https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?w=500" alt="Cuádruple" />
+              <img src={getRoomImage('cuadruple')} alt="Habitación Cuádruple" />
               <div className="room-price-tag">500 Bs.</div>
             </div>
             <div className="room-info">
               <h3>Habitación Cuádruple</h3>
               <p>Ideal para delegaciones o grupos grandes de viajeros.</p>
-              <button className="bv-btn-info">MÁS INFO <i className="fa-solid fa-arrow-right"></i></button>
+              <button className="bv-btn-info" onClick={irAHabitaciones}>
+                MÁS INFO <i className="fa-solid fa-arrow-right"></i>
+              </button>
             </div>
           </div>
 
           {/* 6. Familiar */}
           <div className="room-card">
             <div className="room-img-container">
-              <img src="https://images.unsplash.com/photo-1598928506311-c55ded91a20c?w=500" alt="Familiar" />
+              <img src={getRoomImage('familiar')} alt="Habitación Familiar" />
               <div className="room-price-tag">380 Bs.</div>
             </div>
             <div className="room-info">
               <h3>Habitación Familiar</h3>
               <p>Ambiente acogedor diseñado para el bienestar de tu familia.</p>
-              <button className="bv-btn-info">MÁS INFO <i className="fa-solid fa-arrow-right"></i></button>
+              <button className="bv-btn-info" onClick={irAHabitaciones}>
+                MÁS INFO <i className="fa-solid fa-arrow-right"></i>
+              </button>
             </div>
           </div>
 
           {/* 7. Suite */}
           <div className="room-card room-card-suite">
             <div className="room-img-container">
-              <img src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=500" alt="Suite" />
+              <img src={getRoomImage('suite')} alt="Habitación Suite" />
               <div className="room-price-tag">380 Bs.</div>
             </div>
             <div className="room-info">
               <h3>Habitación Suite</h3>
               <p>Nuestra opción de lujo con áreas integradas y confort superior.</p>
-              <button className="bv-btn-info">MÁS INFO <i className="fa-solid fa-arrow-right"></i></button>
+              <button className="bv-btn-info" onClick={irAHabitaciones}>
+                MÁS INFO <i className="fa-solid fa-arrow-right"></i>
+              </button>
             </div>
           </div>
 
@@ -149,7 +178,7 @@ const Home = () => {
                 y seleccionaré la habitación que mejor se adapte a tus necesidades al instante.
               </p>
               <div className="pao-hero-actions">
-                <button className="bv-btn-chat-pao">
+                <button className="bv-btn-chat-pao" onClick={irAReservasIA}>
                   SOLICITAR RECOMENDACIÓN <i className="fa-solid fa-wand-magic-sparkles"></i>
                 </button>
               </div>
@@ -158,89 +187,89 @@ const Home = () => {
         </div>
       </section>
 
-{/* --- SECCIÓN DESAYUNO BUFETE CENTRADA --- */}
-<section className="bv-buffet-section">
-  <div className="buffet-overlay-centered">
-    <div className="buffet-content-centered">
-      <span className="buffet-tag">SABORES DE LA MAÑANA</span>
-      <h2 className="buffet-title">Desayuno Bufete Regional</h2>
-      <p className="buffet-description">
-        Disfruta de una variedad completa para empezar tu día con energía. <br />
-        Desde opciones saludables hasta clásicos calientes, servidos cada mañana.
-      </p>
-      
-      <div className="buffet-menu-grid-centered">
-        <div className="menu-category">
-          <h4><i className="fa-solid fa-leaf"></i> Saludable</h4>
-          <p>Yogurt, granola, gelatina y frutas.</p>
-        </div>
-        <div className="menu-category">
-          <h4><i className="fa-solid fa-egg"></i> Calientes</h4>
-          <p>Huevos estrellados y a la copa.</p>
-        </div>
-        <div className="menu-category">
-          <h4><i className="fa-solid fa-mug-hot"></i> Bebidas</h4>
-          <p>Café premium, mates y jugos.</p>
-        </div>
-        <div className="menu-category">
-          <h4><i className="fa-solid fa-clock"></i> Horario</h4>
-          <p>07:30 a 09:30 AM.</p>
-        </div>
-      </div>
+      {/* 4. SECCIÓN DESAYUNO BUFETE */}
+      <section className="bv-buffet-section">
+        <div className="buffet-overlay-centered">
+          <div className="buffet-content-centered">
+            <span className="buffet-tag">SABORES DE LA MAÑANA</span>
+            <h2 className="buffet-title">Desayuno Bufete Regional</h2>
+            <p className="buffet-description">
+              Disfruta de una variedad completa para empezar tu día con energía. <br />
+              Desde opciones saludables hasta clásicos calientes, servidos cada mañana.
+            </p>
+            
+            <div className="buffet-menu-grid-centered">
+              <div className="menu-category">
+                <h4><i className="fa-solid fa-leaf"></i> Saludable</h4>
+                <p>Yogurt, granola, gelatina y frutas.</p>
+              </div>
+              <div className="menu-category">
+                <h4><i className="fa-solid fa-egg"></i> Calientes</h4>
+                <p>Huevos estrellados y a la copa.</p>
+              </div>
+              <div className="menu-category">
+                <h4><i className="fa-solid fa-mug-hot"></i> Bebidas</h4>
+                <p>Café premium, mates y jugos.</p>
+              </div>
+              <div className="menu-category">
+                <h4><i className="fa-solid fa-clock"></i> Horario</h4>
+                <p>07:30 a 09:30 AM.</p>
+              </div>
+            </div>
 
-      <div className="buffet-actions-centered">
-        <div className="buffet-badge">
-          <i className="fa-solid fa-circle-check"></i> INCLUIDO EN TODAS TUS RESERVAS
+            <div className="buffet-actions-centered">
+              <div className="buffet-badge">
+                <i className="fa-solid fa-circle-check"></i> INCLUIDO EN TODAS TUS RESERVAS
+              </div>
+              <button 
+                  className="bv-btn-buffet-more" 
+                  onClick={() => navigate('/servicios')}
+              >
+                  MÁS DETALLES <i className="fa-solid fa-chevron-right"></i>
+              </button>
+            </div>
+          </div>
         </div>
-        <button className="bv-btn-buffet-more">
-          MÁS DETALLES <i className="fa-solid fa-chevron-right"></i>
-        </button>
-      </div>
-    </div>
-  </div>
-</section>
-{/* --- FOOTER FINAL --- */}
-<footer className="bv-footer">
-  <div className="footer-content">
-    {/* Columna 1: Logo y Eslogan */}
-    <div className="footer-column brand-col">
-      <img src={logoPaola} alt="Paola Hostal" className="footer-logo" />
-      <p>Tu lugar ideal en el corazón histórico de la Ciudad Blanca.</p>
-      <div className="footer-socials">
-        <a href="#"><i className="fa-brands fa-facebook-f"></i></a>
-        <a href="#"><i className="fa-brands fa-whatsapp"></i></a>
-        <a href="#"><i className="fa-brands fa-tiktok"></i></a>
-      </div>
-    </div>
+      </section>
 
-    {/* Columna 2: Enlaces Rápidos */}
-    <div className="footer-column">
-      <h4>EXPLORAR</h4>
-      <ul>
-        <li><a href="/habitaciones">Reservas</a></li>
-        <li><a href="/habitaciones">Habitaciones</a></li>
-        <li><a href="/servicios">Servicios y Bufete</a></li>
-        <li><a href="/nosotros">Contactos</a></li>
-      </ul>
-    </div>
+      {/* 5. FOOTER FINAL */}
+      <footer className="bv-footer">
+        <div className="footer-content">
+          <div className="footer-column brand-col">
+            <img src={logoPaola} alt="Paola Hostal" className="footer-logo" />
+            <p>Tu lugar ideal en el corazón histórico de la Ciudad Blanca.</p>
+            <div className="footer-socials">
+              <a href="#"><i className="fa-brands fa-facebook-f"></i></a>
+              <a href="#"><i className="fa-brands fa-whatsapp"></i></a>
+              <a href="#"><i className="fa-brands fa-tiktok"></i></a>
+            </div>
+          </div>
 
-    {/* Columna 3: Contacto */}
-    <div className="footer-column">
-      <h4>CONTACTO</h4>
-      <ul>
-        <li><i className="fa-solid fa-location-dot"></i> Calle Colón #138, Sucre - Bolivia</li>
-        <li><i className="fa-solid fa-phone"></i> +591-71154330-6441419</li>
-        <li><i className="fa-solid fa-envelope"></i> hostalpaol@gmail.com</li>
-      </ul>
-    </div>
-  </div>
+          <div className="footer-column">
+            <h4>EXPLORAR</h4>
+            <ul>
+              <li><a href="/reservas" onClick={irAReservasIA}>Reservas Con IA</a></li>
+              <li><a href="/habitaciones" onClick={(e) => { e.preventDefault(); irAHabitaciones(); }}>Habitaciones</a></li>
+              <li><a href="/servicios">Servicios y Bufete</a></li>
+              <li><a href="/nosotros">Contactos</a></li>
+            </ul>
+          </div>
 
-  <div className="footer-bottom">
-    <p>&copy; 2026 Paola Hostal - Sistema Inteligente PAO. Todos los derechos reservados.</p>
-  </div>
-</footer>
+          <div className="footer-column">
+            <h4>CONTACTO</h4>
+            <ul>
+              <li><i className="fa-solid fa-location-dot"></i> Calle Colón #138, Sucre - Bolivia</li>
+              <li><i className="fa-solid fa-phone"></i> +591-71154330-6441419</li>
+              <li><i className="fa-solid fa-envelope"></i> hostalpaol@gmail.com</li>
+            </ul>
+          </div>
+        </div>
+
+        <div className="footer-bottom">
+          <p>&copy; 2026 Paola Hostal - Sistema Inteligente PAO. Todos los derechos reservados.</p>
+        </div>
+      </footer>
     </div>
-    
   );
 };
 

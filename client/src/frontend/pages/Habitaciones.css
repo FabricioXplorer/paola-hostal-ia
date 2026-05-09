@@ -1,0 +1,122 @@
+/* Usamos el prefijo 'inv-' por Inventario */
+
+.inv-admin-page {
+    padding: 20px;
+    animation: invFadeIn 0.5s ease;
+}
+
+.inv-header-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    background: white;
+    padding: 15px 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.inv-page-title {
+    color: #1e293b;
+    font-size: 1.5rem;
+    margin: 0;
+    font-weight: 700;
+}
+
+/* Tabla de Inventario */
+.inv-table-container {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+}
+
+.inv-admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.inv-admin-table th {
+    background-color: #DDA845;
+    color: #1e293b !important;
+    padding: 15px;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    border-bottom: 2px solid #edf2f7;
+}
+
+.inv-admin-table td {
+    padding: 15px;
+    border-bottom: 1px solid #f1f5f9;
+    color: #334155;
+}
+
+/* Badges específicos */
+.inv-status-badge {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    display: inline-block;
+    text-transform: uppercase;
+}
+
+.inv-status-disponible { background: #dcfce7; color: #166534; }
+.inv-status-ocupada { background: #fee2e2; color: #991b1b; }
+.inv-status-mantenimiento { background: #fef3c7; color: #92400e; }
+
+/* Botones de acción del Inventario */
+.inv-btn-edit {
+    background: #e0f2fe;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    padding: 8px;
+    margin-right: 5px;
+    transition: all 0.2s;
+}
+
+.inv-btn-delete {
+    background: #ffeded;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    padding: 8px;
+    transition: all 0.2s;
+}
+
+.inv-btn-edit:hover { background: #bae6fd; transform: scale(1.1); }
+.inv-btn-delete:hover { background: #fecaca; transform: scale(1.1); }
+
+/* Modal de Inventario */
+.inv-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(15, 23, 42, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+}
+
+.inv-modal-content {
+    background: white;
+    padding: 30px;
+    border-radius: 16px;
+    width: 100%;
+    max-width: 500px;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+@keyframes invFadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+

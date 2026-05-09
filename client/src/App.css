@@ -1,38 +1,81 @@
-.App {
-  text-align: center;
+.global-nav {
+    position: sticky;
+    top: 0;
+    width: 100%;
+    background: rgba(0, 15, 45, 0.8);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px); /* Soporte para Safari/iOS */
+    padding: 10px 0; /* Reducido ligeramente para ganar espacio vertical */
+    z-index: 1000;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+/* --- ESTILOS DEL NAVBAR GLOBAL --- */
+.bv-header-centered {
+    padding: 20px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    z-index: 100;
+    width: 100%;
+    background: rgba(0, 15, 45, 0.2);
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.bv-main-logo {
+    height: clamp(50px, 10vw, 75px); /* Logo fluido según el tamaño de pantalla */
+    filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));
+    transition: 0.3s;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.bv-nav {
+    display: flex;
+    gap: clamp(15px, 3vw, 30px); /* Espaciado fluido entre enlaces */
+    flex-wrap: wrap; /* Permite que los enlaces bajen si no caben */
+    justify-content: center;
+    padding: 0 15px;
 }
 
-.App-link {
-  color: #61dafb;
+.bv-nav a {
+    text-decoration: none;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: clamp(9px, 2vw, 11px); /* Texto legible en móviles pequeños */
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px; /* Reducido un poco para móviles */
+    transition: 0.3s;
+    padding-bottom: 5px;
+    border-bottom: 2px solid transparent;
+    white-space: nowrap; /* Evita que una palabra se corte a la mitad */
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.bv-nav a.active, .bv-nav a:hover {
+    color: #C5A059;
+    border-bottom-color: #C5A059;
+}
+
+/* --- AJUSTES ESPECÍFICOS PARA MÓVILES (Responsive) --- */
+@media (max-width: 768px) {
+    .global-nav {
+        padding: 5px 0;
+    }
+
+    .bv-header-centered {
+        padding: 15px 0;
+        gap: 10px;
+    }
+
+    .bv-nav {
+        gap: 12px; /* Espacio mínimo para que el usuario pueda tocar con el dedo */
+    }
+
+    .bv-nav a {
+        letter-spacing: 1px; /* Ahorra espacio horizontal */
+    }
+}
+
+/* Optimización para iPhone (Safari) */
+@supports (-webkit-overflow-scrolling: touch) {
+    .global-nav {
+        background: rgba(0, 15, 45, 0.9); /* Un poco más opaco en iOS para mejor legibilidad */
+    }
 }
