@@ -15,7 +15,6 @@ import Sidebar from './frontend/components/Sidebar';
 import AdminDashboard from './frontend/pages/AdminDashboard';
 import HabitacionesAdmin from './frontend/pages/Habitaciones'; 
 import Reservas from './frontend/pages/Reservas';
-import Clientes from './frontend/pages/Clientes'; // Módulo de Cartera de Huéspedes
 import UsuariosAdmin from './frontend/pages/UsuariosAdmin';
 import Reportes from './frontend/pages/Reportes'; 
 
@@ -89,7 +88,6 @@ function App() {
                       <Route path="/" element={<AdminDashboard />} />
                       <Route path="habitaciones" element={<HabitacionesAdmin />} />
                       <Route path="reservas" element={<Reservas />} />
-                      <Route path="clientes" element={<Clientes />} />
                       <Route path="usuarios" element={<UsuariosAdmin />} />
                       <Route path="reportes" element={<Reportes />} />
                     </Routes>

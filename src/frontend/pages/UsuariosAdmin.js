@@ -1,22 +1,22 @@
 import React, { useEffect, useState } from 'react';
-import './AdminPages.css';
+import { Eye, EyeOff, Edit3, Save, X } from 'lucide-react'; 
+import './UsuariosAdmin.css';
 
 const UsuariosAdmin = () => {
     const [personal, setPersonal] = useState([]);
     const [mostrarModal, setMostrarModal] = useState(false);
     const [nuevoAdmin, setNuevoAdmin] = useState({ nombre: '', usuario: '', password: '', rol: 'Recepcionista' });
-    
     const [adminLogueado, setAdminLogueado] = useState(null);
+
+    const [usuarioEditando, setUsuarioEditando] = useState(null);
+    const [mostrarPasswordId, setMostrarPasswordId] = useState(null);
 
     useEffect(() => { 
         cargarPersonal(); 
-        
-        // Intentamos obtener el usuario de ambas formas por si acaso
         const dataStorage = localStorage.getItem('user');
         if (dataStorage) {
             try {
                 const parsedUser = JSON.parse(dataStorage);
-                // Si el objeto tiene la propiedad 'rol', lo asignamos
                 setAdminLogueado(parsedUser);
             } catch (e) {
                 console.error("Error al leer sesión:", e);
@@ -33,7 +33,17 @@ const UsuariosAdmin = () => {
     const handleCrearAdmin = async (e) => {
         e.preventDefault();
         if (adminLogueado?.rol !== 'SuperAdmin') {
-            alert("Acción bloqueada: Tu rol es " + adminLogueado?.rol + ". Solo SuperAdmin puede crear personal.");
+            alert("Acción bloqueada: Solo SuperAdmin puede crear personal.");
+            return;
+        }
+
+        // VALIDACIONES DE SEGURIDAD
+        if (!/^[a-zA-ZáéíóúÁÉÍÓÚñÑ]+$/.test(nuevoAdmin.usuario)) {
+            alert("El usuario solo debe contener letras.");
+            return;
+        }
+        if (nuevoAdmin.password.length < 6) {
+            alert("La contraseña debe tener al menos 6 caracteres.");
             return;
         }
 
@@ -46,19 +56,39 @@ const UsuariosAdmin = () => {
         if (data.success) {
             alert("Trabajador registrado con éxito en Paola Hostal");
             setMostrarModal(false);
+            setNuevoAdmin({ nombre: '', usuario: '', password: '', rol: 'Recepcionista' });
             cargarPersonal();
         } else { alert(data.mensaje); }
     };
 
-    const eliminarAdmin = async (id, nombreTarget) => {
-        // Validación forzada contra el Storage para evitar desfases
-        const sesionActual = JSON.parse(localStorage.getItem('user'));
-
-        if (!sesionActual || sesionActual.rol !== 'SuperAdmin') {
-            alert("Acceso denegado. Se requiere nivel SuperAdmin para revocar accesos.");
+    const handleGuardarEdicion = async (id) => {
+        if (!/^[a-zA-ZáéíóúÁÉÍÓÚñÑ]+$/.test(usuarioEditando.usuario)) {
+            alert("El usuario solo debe contener letras.");
+            return;
+        }
+        if (usuarioEditando.password && usuarioEditando.password.length < 6) {
+            alert("La nueva contraseña debe tener al menos 6 caracteres.");
             return;
         }
 
+        try {
+            const res = await fetch(`http://localhost:5000/api/actualizar-trabajador/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(usuarioEditando)
+            });
+            const data = await res.json();
+            if (data.success) {
+                alert("Datos actualizados correctamente");
+                setUsuarioEditando(null);
+                cargarPersonal();
+            } else {
+                alert("Error: " + data.mensaje);
+            }
+        } catch (e) { alert("Error al conectar con el servidor"); }
+    };
+
+    const eliminarAdmin = async (id, nombreTarget) => {
         if (window.confirm(`¿Estás seguro de quitarle el acceso a ${nombreTarget}?`)) {
             const res = await fetch(`http://localhost:5000/api/eliminar-trabajador/${id}`, { method: 'DELETE' });
             const data = await res.json();
@@ -81,7 +111,7 @@ const UsuariosAdmin = () => {
                 )}
             </div>
 
-            {/* MODAL DE REGISTRO */}
+            {/* MODAL DE REGISTRO CON CLASES RESTAURADAS */}
             {mostrarModal && (
                 <div className="modal-overlay">
                     <div className="modal-content" style={{ maxWidth: '400px' }}>
@@ -89,26 +119,50 @@ const UsuariosAdmin = () => {
                             <h3>Alta de Trabajador</h3>
                             <button className="btn-close" onClick={() => setMostrarModal(false)}>&times;</button>
                         </div>
-                        <form className="modal-form" style={{ display: 'flex', flexDirection: 'column', gap: '15px' }} onSubmit={handleCrearAdmin}>
+                        <form className="modal-form" onSubmit={handleCrearAdmin}>
                             <div className="form-group">
                                 <label>Nombre Completo</label>
-                                <input type="text" required onChange={e => setNuevoAdmin({...nuevoAdmin, nombre: e.target.value})} />
+                                <input 
+                                    type="text" 
+                                    required 
+                                    value={nuevoAdmin.nombre} 
+                                    onChange={e => setNuevoAdmin({...nuevoAdmin, nombre: e.target.value})} 
+                                />
                             </div>
                             <div className="form-group">
-                                <label>Usuario (Login)</label>
-                                <input type="text" required onChange={e => setNuevoAdmin({...nuevoAdmin, usuario: e.target.value})} />
+                                <label>Usuario (Solo letras, max 10)</label>
+                                <input 
+                                    type="text" 
+                                    required 
+                                    value={nuevoAdmin.usuario}
+                                    onChange={e => {
+                                        const val = e.target.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ]/g, '');
+                                        if (val.length <= 10) setNuevoAdmin({...nuevoAdmin, usuario: val});
+                                    }} 
+                                />
                             </div>
                             <div className="form-group">
-                                <label>Password Provisional</label>
-                                <input type="password" required onChange={e => setNuevoAdmin({...nuevoAdmin, password: e.target.value})} />
+                                <label>Password Provisional (Min 6 carac.)</label>
+                                <input 
+                                    type="password" 
+                                    required 
+                                    value={nuevoAdmin.password} 
+                                    minLength={6}   /* Mínimo 6 */
+                                    maxLength={6}  /* Límite máximo para que no se vea infinito */
+                                    onChange={e => setNuevoAdmin({...nuevoAdmin, password: e.target.value})} 
+                                />
                             </div>
                             <div className="form-group">
                                 <label>Rol</label>
-                                <select onChange={e => setNuevoAdmin({...nuevoAdmin, rol: e.target.value})}>
+                                <select 
+                                    value={nuevoAdmin.rol} 
+                                    onChange={e => setNuevoAdmin({...nuevoAdmin, rol: e.target.value})}
+                                >
                                     <option value="Recepcionista">Recepcionista</option>
                                     <option value="SuperAdmin">SuperAdmin</option>
                                 </select>
                             </div>
+                            {/* CLASE btn-submit-modal PARA EL DISEÑO DORADO */}
                             <button type="submit" className="btn-submit-modal">Registrar Trabajador</button>
                         </form>
                     </div>
@@ -121,6 +175,7 @@ const UsuariosAdmin = () => {
                         <tr>
                             <th>Nombre</th>
                             <th>Usuario</th>
+                            <th>Contraseña</th>
                             <th>Rol</th>
                             <th>Último Acceso</th>
                             <th>Acciones</th>
@@ -129,25 +184,62 @@ const UsuariosAdmin = () => {
                     <tbody>
                         {personal.map(u => (
                             <tr key={u.id_admin}>
-                                <td className="font-bold">{u.nombre}</td>
-                                <td>{u.usuario}</td>
-                                <td>
-                                    <span className={`status-badge ${u.rol.toLowerCase()}`}>{u.rol}</span>
+                                <td className="font-bold">
+                                    {usuarioEditando?.id_admin === u.id_admin ? 
+                                        <input type="text" value={usuarioEditando.nombre} onChange={e => setUsuarioEditando({...usuarioEditando, nombre: e.target.value})} />
+                                        : u.nombre}
                                 </td>
                                 <td>
-                                    {u.ultimo_acceso 
-                                        ? new Date(u.ultimo_acceso).toLocaleString('es-BO') 
-                                        : <span className="text-muted">Sin actividad</span>}
+                                    {usuarioEditando?.id_admin === u.id_admin ? 
+                                        <input 
+                                            type="text" 
+                                            value={usuarioEditando.usuario} 
+                                            onChange={e => {
+                                                const val = e.target.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ]/g, '');
+                                                if (val.length <= 10) setUsuarioEditando({...usuarioEditando, usuario: val});
+                                            }} 
+                                        />
+                                        : u.usuario}
                                 </td>
                                 <td>
-                                    <button 
-                                        className={`btn-cancel ${adminLogueado?.rol !== 'SuperAdmin' ? 'disabled' : ''}`} 
-                                        onClick={() => eliminarAdmin(u.id_admin, u.nombre)}
-                                        title={adminLogueado?.rol !== 'SuperAdmin' ? "Solo SuperAdmin" : "Revocar acceso"}
-                                        style={adminLogueado?.rol !== 'SuperAdmin' ? { opacity: 0.5, cursor: 'not-allowed' } : {}}
-                                    >
-                                        Quitar Acceso
-                                    </button>
+                                    {usuarioEditando?.id_admin === u.id_admin ? 
+                                        <input type="text" placeholder="Min 6 carac..." maxLength={6} onChange={e => setUsuarioEditando({...usuarioEditando, password: e.target.value})} />
+                                        : (
+                                            <div className="password-display-wrapper">
+                                                <span>{mostrarPasswordId === u.id_admin ? u.password_hash : '••••••••'}</span>
+                                                <button 
+                                                    style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
+                                                    onClick={() => setMostrarPasswordId(mostrarPasswordId === u.id_admin ? null : u.id_admin)}
+                                                >
+                                                    {mostrarPasswordId === u.id_admin ? <EyeOff size={16} color="#64748b" /> : <Eye size={16} color="#64748b" />}
+                                                </button>
+                                            </div>
+                                        )
+                                    }
+                                </td>
+                                <td>
+                                    {usuarioEditando?.id_admin === u.id_admin ? 
+                                        <select value={usuarioEditando.rol} onChange={e => setUsuarioEditando({...usuarioEditando, rol: e.target.value})}>
+                                            <option value="Recepcionista">Recepcionista</option>
+                                            <option value="SuperAdmin">SuperAdmin</option>
+                                        </select>
+                                        : <span className={`status-badge ${u.rol.toLowerCase()}`}>{u.rol}</span>}
+                                </td>
+                                <td>{u.ultimo_acceso ? new Date(u.ultimo_acceso).toLocaleString('es-BO') : "Sin actividad"}</td>
+                                <td>
+                                    <div style={{ display: 'flex', gap: '10px' }}>
+                                        {usuarioEditando?.id_admin === u.id_admin ? (
+                                            <>
+                                                <button onClick={() => handleGuardarEdicion(u.id_admin)} className="btn-save-inline"><Save size={18} color="green" /></button>
+                                                <button onClick={() => setUsuarioEditando(null)} className="btn-cancel-inline"><X size={18} color="red" /></button>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <button className="btn-edit-inline" onClick={() => setUsuarioEditando({...u, password: ''})}><Edit3 size={18} color="#C5A059" /></button>
+                                                <button className={`btn-delete-inline ${adminLogueado?.rol !== 'SuperAdmin' ? 'disabled' : ''}`} onClick={() => eliminarAdmin(u.id_admin, u.nombre)} disabled={adminLogueado?.rol !== 'SuperAdmin'}>Eliminar</button>
+                                            </>
+                                        )}
+                                    </div>
                                 </td>
                             </tr>
                         ))}

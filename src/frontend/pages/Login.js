@@ -14,6 +14,12 @@ const Login = ({ setIsAuthenticated }) => {
     e.preventDefault();
     setError('');
 
+    // Validación de seguridad mínima antes de enviar al servidor
+    if (password.length < 6) {
+      setError("La contraseña debe tener al menos 6 caracteres.");
+      return;
+    }
+
     try {
       const response = await fetch('http://localhost:5000/api/login', {
         method: 'POST',
@@ -24,19 +30,11 @@ const Login = ({ setIsAuthenticated }) => {
       const data = await response.json();
 
       if (data.success) {
-        // 1. Establecer autenticación en el estado de la App
         setIsAuthenticated(true);
-        
-        // 2. Guardar bandera de sesión activa
         localStorage.setItem('auth_pao', 'true');
-        
-        // 3. CRÍTICO: Guardar el objeto de usuario completo (id, nombre, rol)
-        // Esto corrige el error de "No tienes superadmin" en el panel de personal
         localStorage.setItem('user', JSON.stringify(data.user)); 
-        
-        // 4. Guardar nombre por separado para compatibilidad con otros saludos
         localStorage.setItem('admin_nombre', data.user.nombre); 
-
+        localStorage.setItem('admin_rol', data.user.rol.toLowerCase());
         navigate('/admin');
       } else {
         setError(data.mensaje);
@@ -58,9 +56,14 @@ const Login = ({ setIsAuthenticated }) => {
           <User size={20} color="#e2b04a" />
           <input 
             type="text" 
-            placeholder="Usuario" 
+            placeholder="Usuario (Solo letras)" 
             value={user} 
-            onChange={(e) => setUser(e.target.value)} 
+            maxLength={10} // Límite máximo de 10 caracteres
+            onChange={(e) => {
+              // Bloquea números y caracteres especiales en tiempo real
+              const val = e.target.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ]/g, '');
+              setUser(val);
+            }} 
             required
           />
         </div>
@@ -70,6 +73,7 @@ const Login = ({ setIsAuthenticated }) => {
             type="password" 
             placeholder="Contraseña" 
             value={password} 
+            maxLength={6} // Límite máximo de 6 caracteres
             onChange={(e) => setPassword(e.target.value)} 
             required
           />

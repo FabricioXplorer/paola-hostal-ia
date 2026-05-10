@@ -4,7 +4,6 @@ import {
   LayoutDashboard, 
   BedDouble, 
   CalendarCheck, 
-  Users, 
   LogOut,
   Hotel,
   TrendingUp,
@@ -15,20 +14,35 @@ import './Sidebar.css';
 const Sidebar = ({ setIsAuthenticated }) => {
   const location = useLocation();
 
-  const menuItems = [
+  // 1. Obtenemos el rol y lo normalizamos para la comparación
+  const userRole = (localStorage.getItem('admin_rol') || '').toLowerCase(); 
+
+  const allMenuItems = [
     { path: '/admin', icon: <LayoutDashboard size={20} />, label: 'Salpicadero' },
     { path: '/admin/habitaciones', icon: <BedDouble size={20} />, label: 'Habitaciones' },
     { path: '/admin/reservas', icon: <CalendarCheck size={20} />, label: 'Reservas' },
-    { path: '/admin/clientes', icon: <Users size={20} />, label: 'Clientes' },
     { path: '/admin/reportes', icon: <TrendingUp size={20} />, label: 'Reportes' },
     { path: '/admin/usuarios', icon: <ShieldCheck size={20} />, label: 'Personal Admin' },
   ];
 
+  // 2. FILTRADO POR ROL:
+  // Si es 'superadmin', ve todas las opciones.
+  // Si es 'recepcionista', solo verá el 'Salpicadero'.
+  const menuItems = allMenuItems.filter(item => {
+    if (userRole === 'superadmin') {
+      return true;
+    }
+    // Por defecto para Recepcionista solo mostramos el Salpicadero
+    return item.label === 'Salpicadero';
+  });
+
   // --- FUNCIÓN PARA CERRAR SESIÓN ---
   const handleLogout = () => {
-    localStorage.removeItem('auth_pao'); // Eliminamos la bandera de autenticación
-    localStorage.removeItem('admin_nombre'); // Limpiamos el nombre guardado
-    setIsAuthenticated(false); // Actualizamos el estado global (esto disparará el Navigate de App.js)
+    localStorage.removeItem('auth_pao'); 
+    localStorage.removeItem('admin_nombre'); 
+    localStorage.removeItem('admin_rol'); 
+    localStorage.removeItem('user'); 
+    setIsAuthenticated(false); 
   };
 
   return (
@@ -62,12 +76,15 @@ const Sidebar = ({ setIsAuthenticated }) => {
           borderBottom: '1px solid rgba(226, 176, 74, 0.1)',
           marginBottom: '10px'
         }}>
-          Usuario: <span style={{ color: '#e2b04a' }}>{localStorage.getItem('admin_nombre') || 'Admin'}</span>
+          Usuario: <span style={{ color: '#e2b04a' }}>{localStorage.getItem('admin_nombre') || 'Usuario'}</span>
+          <br />
+          <small style={{ fontSize: '0.65rem', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+            Acceso: {userRole === 'superadmin' ? 'Super Admin' : 'Recepcionista'}
+          </small>
         </div>
 
-        {/* --- ENLACE ACTUALIZADO: CERRAR SESIÓN --- */}
         <Link 
-          to="/login" // Redireccionamos directamente al login
+          to="/login" 
           onClick={handleLogout} 
           className="sidebar-link sidebar-link-logout"
         >

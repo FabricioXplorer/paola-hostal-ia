@@ -48,6 +48,14 @@ classifier.addDocument('anular mi reserva', 'cancelar_reserva');
 classifier.addDocument('cancelar habitacion', 'cancelar_reserva');
 classifier.addDocument('eliminar mi reserva', 'cancelar_reserva');
 
+// --- INTENCION DE AGRADECIMIENDO ---
+classifier.addDocument('gracias', 'agradecimiento');
+classifier.addDocument('muchas gracias', 'agradecimiento');
+classifier.addDocument('mil gracias', 'agradecimiento');
+classifier.addDocument('perfecto gracias', 'agradecimiento');
+classifier.addDocument('listo gracias', 'agradecimiento');
+classifier.addDocument('ok gracias', 'agradecimiento');
+
 classifier.train();
 
 // ENTRENAR EL MODELO

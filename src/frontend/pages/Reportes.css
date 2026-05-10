@@ -1,7 +1,10 @@
-/* Reportes.css */
+/* --- Reportes.css - Gestión de Estadísticas Paola Hostal --- */
+
 .admin-page {
     padding: 20px;
     animation: fadeIn 0.5s ease;
+    background-color: #f8fafc;
+    min-height: 100vh;
 }
 
 /* Encabezado y Títulos */
@@ -15,11 +18,89 @@
 .page-subtitle {
     color: #64748b;
     margin-top: 5px;
+    font-size: 0.95rem;
+}
+
+/* --- CABECERA Y FILTROS --- */
+.admin-header-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.action-buttons-group {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.filter-container {
+    background: white;
+    border: 2px solid #f1f5f9;
+    padding: 8px 15px;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    transition: border-color 0.3s;
+}
+
+.filter-container:hover {
+    border-color: #C5A059;
+}
+
+.filter-container select {
+    background: transparent;
+    border: none;
+    font-size: 0.9rem;
+    color: #1e293b;
+    font-weight: 600;
+    outline: none;
+    cursor: pointer;
+}
+
+.select-mes-desplegable {
+    border: none;
+    outline: none;
+    background: transparent;
+    color: #1e293b;
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    padding-right: 5px;
+    text-transform: capitalize;
+}
+
+/* Botón Ovalado de Alternancia */
+.btn-toggle-report {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: #C5A059;
+    color: white;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(197, 160, 89, 0.2);
+}
+
+.btn-toggle-report:hover {
+    background-color: #b08d4a;
+    transform: translateY(-1px);
+}
+
+.btn-toggle-report.active {
+    background-color: #1e293b;
+    box-shadow: 0 4px 6px rgba(30, 41, 59, 0.2);
 }
 
 /* Botón de Impresión Estilizado */
 .btn-print-action {
-    background-color: #1e293b; /* Azul oscuro profesional */
+    background-color: #1e293b;
     color: white;
     border: none;
     padding: 10px 22px;
@@ -43,7 +124,7 @@
 /* Tarjetas de Estadísticas */
 .stats-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 15px;
     margin-bottom: 30px;
 }
@@ -61,7 +142,6 @@
     transform: translateY(-5px);
 }
 
-/* Colores institucionales por tarjeta */
 .gold-border { border-left: 5px solid #C5A059; }
 .purple-border { border-left: 5px solid #8b5cf6; }
 .green-border { border-left: 5px solid #22c55e; }
@@ -77,12 +157,14 @@
 .card-label {
     color: #64748b;
     font-weight: 600;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
+    text-transform: uppercase;
 }
 
 .card-value {
     font-size: 1.8rem;
     color: #1e293b;
+    font-weight: 800;
     margin: 0;
 }
 
@@ -91,7 +173,7 @@
     color: #94a3b8;
 }
 
-/* Gráfica de Tendencia Visual */
+/* --- GRÁFICA DE TENDENCIA (LÍNEAS) --- */
 .chart-section {
     background: white;
     border-radius: 15px;
@@ -107,47 +189,53 @@
     margin-bottom: 20px;
 }
 
-.bar-container {
-    height: 200px;
-    display: flex;
-    align-items: flex-end;
-    gap: 15px;
-    border-bottom: 2px solid #f1f5f9;
-    padding-bottom: 5px;
-}
-
-.bar-column {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: relative;
-}
-
-.bar-fill {
-    width: 100%;
-    max-width: 35px;
-    background: linear-gradient(to top, #C5A059, #DDA845);
-    border-radius: 6px 6px 0 0;
-    transition: 0.5s ease-out;
-    position: relative;
-}
-
-.bar-value {
-    position: absolute;
-    top: -20px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 0.65rem;
-    font-weight: bold;
+.chart-header h3 {
+    margin: 0;
+    font-size: 1.1rem;
     color: #1e293b;
 }
 
-.bar-month {
-    margin-top: 10px;
-    font-size: 0.75rem;
+.chart-visual-container {
+    width: 100%;
+    padding: 10px 0;
+    overflow-x: auto;
+}
+
+.svg-line-chart {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.path-line {
+    stroke-dasharray: 2000;
+    stroke-dashoffset: 2000;
+    animation: drawLine 2.5s forwards ease-in-out;
+}
+
+@keyframes drawLine {
+    to { stroke-dashoffset: 0; }
+}
+
+.node-text {
+    font-size: 10px;
+    font-weight: 800;
+    fill: #1e293b;
+}
+
+.axis-text {
+    font-size: 11px;
     font-weight: 600;
-    color: #64748b;
+    fill: #94a3b8;
+    text-transform: uppercase;
+}
+
+.chart-node circle {
+    transition: r 0.3s ease;
+}
+
+.chart-node:hover circle {
+    r: 7;
 }
 
 /* Tabla y Auditoría */
@@ -158,24 +246,50 @@
     border: 1px solid #f1f5f9;
 }
 
+.table-header-title {
+    padding: 15px 20px;
+    background: #f8fafc;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.table-header-title h3 {
+    margin: 0;
+    font-size: 1rem;
+    color: #1e293b;
+}
+
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.admin-table th {
+    background: #f8fafc;
+    padding: 12px 20px;
+    text-align: left;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    color: #64748b;
+    border-bottom: 2px solid #e2e8f0;
+}
+
+.admin-table td {
+    padding: 14px 20px;
+    border-bottom: 1px solid #f1f5f9;
+    font-size: 0.9rem;
+    color: #334155;
+}
+
 .audit-status {
-    display: flex;
+    display: inline-flex;
     align-items: center;
     gap: 5px;
     color: #22c55e;
+    background: #f0fdf4;
+    padding: 4px 10px;
+    border-radius: 8px;
     font-weight: 700;
-    font-size: 0.85rem;
-}
-
-/* Filtros */
-.filter-container select {
-    background: transparent;
-    border: none;
-    font-size: 0.9rem;
-    color: #1e293b;
-    font-weight: 600;
-    outline: none;
-    cursor: pointer;
+    font-size: 0.75rem;
 }
 
 /* Elementos Invisibles en Pantalla */
@@ -183,80 +297,63 @@
     display: none;
 }
 
-/* --- ESTILOS DE IMPRESIÓN --- */
+/* --- ESTILOS DE IMPRESIÓN ACTUALIZADOS --- */
 @media print {
-    /* Ocultar Interfaz */
-    nav, .sidebar, .admin-header-flex, button, .no-print, .chart-section {
+    /* Quitamos .chart-section de aquí para que SÍ se imprima */
+    nav, .sidebar, .admin-header-flex, button, .no-print {
         display: none !important;
     }
 
-    .admin-main-content {
-        margin: 0 !important;
-        padding: 0 !important;
-    }
+    .admin-main-content { margin: 0 !important; padding: 0 !important; }
+    .printable-content { display: block !important; width: 100%; }
 
-    .printable-content {
-        display: block !important;
-        width: 100%;
-    }
-
-    /* Encabezado de Reporte */
     .print-only-header {
         display: block !important;
         text-align: center;
-        margin-bottom: 30px;
+        margin-bottom: 20px;
     }
 
-    /* Ocultar Ocupación de Tiempo Real (Huéspedes hoy, reservas, libres) */
+    /* Ajuste para que la gráfica ocupe el ancho de la hoja */
+    .chart-section {
+        display: block !important;
+        border: 1px solid #C5A059 !important;
+        margin-bottom: 30px;
+        break-inside: avoid; /* Evita que la gráfica se corte entre dos páginas */
+    }
+
+    .svg-line-chart {
+        width: 100% !important;
+        height: auto !important;
+    }
+
+    /* Ocultamos las tarjetas pequeñas para ahorrar tinta, dejando solo la de Recaudación */
     .stats-grid .stat-card:nth-child(2),
     .stats-grid .stat-card:nth-child(3),
     .stats-grid .stat-card:nth-child(4) {
         display: none !important;
     }
 
-    /* Centrar Financiero */
     .stats-grid {
         display: flex !important;
         justify-content: center;
-        margin-bottom: 40px;
+        margin-bottom: 30px;
     }
 
     .stat-card {
-        width: 300px;
+        width: 100%;
+        max-width: 350px;
         border: 1px solid #C5A059 !important;
-        box-shadow: none !important;
     }
 
-    .table-container {
-        box-shadow: none !important;
-        border: 1px solid #ddd !important;
+    .table-container { 
+        box-shadow: none !important; 
+        border: 1px solid #ddd !important; 
+        page-break-before: auto;
     }
 
-    /* Pie de página para Firma */
     .print-only-footer {
         display: block !important;
-        margin-top: 100px;
+        margin-top: 50px;
         text-align: center;
     }
-
-    .signature-box {
-        text-align: center;
-        width: 250px;
-        margin: 0 auto;
-    }
-
-    .signature-box .line {
-        border-top: 2px solid #333;
-        margin-bottom: 10px;
-    }
-
-    body {
-        background: white !important;
-        font-size: 12pt;
-    }
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
 }

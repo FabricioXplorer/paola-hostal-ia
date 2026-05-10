@@ -71,16 +71,17 @@ const SobreNosotros = () => {
       <section className="location-section">
         <div className="location-grid">
             <div className="map-container">
-                <iframe 
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3771.5034374353724!2d-65.2633000258525!3d-19.041619982155823!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x93fbcf4014902c4b%3A0xc3f982d63428d05d!2sPaola%20Hostal!5e0!3m2!1ses-419!2sbo!4v1709800000000!5m2!1ses-419!2sbo" 
-                    width="100%" 
-                    height="100%" 
-                    style={{ border: 0, borderRadius: '30px' }} 
-                    allowFullScreen="" 
-                    loading="lazy"
-                    title="Ubicación Paola Hostal"
-                ></iframe>
-            </div>
+    <iframe 
+  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3771.530372138873!2d-65.25997232386903!3d-19.04041791104618!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x93fbcf49d0833b45%3A0x112aa4e1c42d32f3!2sPaola%20Hostal!5e0!3m2!1ses-419!2sbo!4v1715288540000!5m2!1ses-419!2sbo" 
+  width="100%" 
+  height="100%" 
+  style={{ border: 0, borderRadius: '30px' }} 
+  allowFullScreen="" 
+  loading="lazy" 
+  referrerPolicy="no-referrer-when-downgrade"
+  title="Ubicación Paola Hostal"
+></iframe>
+</div>
             
             <div className="contact-details-box">
                 <h3>¿Planeas tu visita?</h3>

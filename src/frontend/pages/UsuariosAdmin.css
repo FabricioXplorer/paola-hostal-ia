@@ -1,0 +1,267 @@
+/* ============================================================
+   ESTILOS GESTIÓN DE PERSONAL (UsuariosAdmin.css)
+   ============================================================ */
+
+.admin-page {
+    padding: 20px;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+/* Header y Títulos */
+.admin-header-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.page-title {
+    color: #1e293b;
+    font-size: 1.5rem;
+    margin: 0;
+}
+
+.page-subtitle {
+    color: #64748b;
+    font-size: 0.9rem;
+}
+
+/* --- ESTILOS DEL MODAL (RESTAURADOS) --- */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    width: 90%;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    position: relative;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #f1f5f9;
+    padding-bottom: 10px;
+}
+
+.btn-close {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #64748b;
+}
+
+.modal-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.form-group label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #475569;
+}
+
+.form-group input, .form-group select {
+    padding: 10px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    outline: none;
+}
+
+/* BOTÓN DORADO DEL MODAL */
+.btn-submit-modal {
+    background-color: #C5A059; /* Dorado Paola Hostal */
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s;
+    margin-top: 10px;
+}
+
+.btn-submit-modal:hover {
+    background-color: #b08d4a;
+}
+
+/* --- ESTILOS DE LA TABLA --- */
+.table-container.shadow-sm {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.admin-table th {
+    background: #f8fafc;
+    padding: 15px;
+    text-align: left;
+    font-size: 0.75rem;
+    color: #64748b;
+    border-bottom: 2px solid #f1f5f9;
+}
+
+.admin-table td {
+    padding: 15px;
+    border-bottom: 1px solid #f1f5f9;
+    font-size: 0.85rem;
+}
+
+/* Inputs de edición en tabla */
+.admin-table input[type="text"], 
+.admin-table select {
+    padding: 5px 8px;
+    border: 1px solid #C5A059;
+    border-radius: 4px;
+    outline: none;
+    width: 100%;
+}
+
+/* Badges de Rol */
+.status-badge {
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 0.7rem;
+    font-weight: bold;
+}
+
+.status-badge.superadmin {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.status-badge.recepcionista {
+    background: #e0f2fe;
+    color: #0369a1;
+}
+
+/* Botón Nuevo Trabajador */
+.btn-add-reserva {
+    background-color: #C5A059;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+/* Botón Eliminar */
+.btn-delete-inline {
+    background-color: #fee2e2;
+    color: #b91c1c;
+    border: 1px solid #fecaca;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    cursor: pointer;
+}
+
+.btn-delete-inline.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+/* ============================================================
+   ESTILOS ESPECÍFICOS PARA LOS BOTONES DE ACCIÓN (TABLA)
+   ============================================================ */
+
+/* Quitar el recuadro gris feo del botón editar */
+.btn-edit-inline {
+    background: none !important; /* Forzamos a que no tenga fondo */
+    border: none !important;       /* Quitamos el borde gris */
+    padding: 8px !important;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    border-radius: 50%; /* Para que el efecto de hover sea circular */
+}
+
+/* Efecto al pasar el mouse por encima del icono editar */
+.btn-edit-inline:hover {
+    background-color: #fff7ed !important; /* Un fondo ámbar muy suave */
+    transform: scale(1.2);
+}
+
+/* Estilo para los botones de Guardar y Cancelar (cuando estás editando) */
+.btn-save-inline, .btn-cancel-inline {
+    background: none !important;
+    border: none !important;
+    padding: 5px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.btn-save-inline:hover, .btn-cancel-inline:hover {
+    transform: scale(1.2);
+}
+
+/* Ajuste del botón Eliminar (Quitar Acceso) */
+.btn-delete-inline {
+    background-color: #fee2e2;
+    color: #b91c1c;
+    border: 1px solid #fecaca;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-delete-inline:hover:not(:disabled) {
+    background-color: #ef4444;
+    color: white;
+    border-color: #ef4444;
+}
+
+/* Asegurar que el icono del Ojo tampoco tenga fondo */
+.password-display-wrapper button {
+    background: none !important;
+    border: none !important;
+    cursor: pointer;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    color: #64748b;
+}
+
+.password-display-wrapper button:hover {
+    color: #C5A059; /* Cambia a dorado al pasar el mouse */
+}
