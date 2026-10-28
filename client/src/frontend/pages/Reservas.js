@@ -20,6 +20,19 @@ const Reservas = () => {
 
     useEffect(() => { cargarDatos(); }, []);
 
+    // FUNCIÓN PARA RECALCULAR EL MONTO AUTOMÁTICAMENTE
+    const recalcularMonto = (ingreso, salida, idHab) => {
+        const habSeleccionada = habitaciones.find(h => h.id_habitacion === parseInt(idHab));
+        if (!habSeleccionada) return 0;
+        
+        const inicio = new Date(ingreso);
+        const fin = new Date(salida);
+        const diffTime = fin - inicio;
+        const noches = Math.max(1, Math.ceil(diffTime / (1000 * 60 * 60 * 24)));
+        
+        return noches * habSeleccionada.precio_noche;
+    };
+
     // FILTRO SEGURO: Evita errores si los datos vienen nulos o indefinidos
     const reservasFiltradas = reservas.filter(r => {
         const nombre = (r.nombre_completo || "").toLowerCase();
@@ -107,7 +120,6 @@ const Reservas = () => {
                                 <td className="res-td-tel">{r.telefono || 'No reg.'}</td>
                                 <td><span className="res-room-tag">{r.numero}</span></td>
                                 <td>
-                                    {/* Contenedor corregido para que las fechas no se encimen */}
                                     <div className="res-td-date-container">
                                         <div className="res-td-date"><strong>In:</strong> {new Date(r.fecha_ingreso).toLocaleDateString()}</div>
                                         <div className="res-td-date"><strong>Out:</strong> {new Date(r.fecha_salida).toLocaleDateString()}</div>
@@ -171,7 +183,18 @@ const Reservas = () => {
                             <div className="res-form-grid">
                                 <div className="res-form-group">
                                     <label>Habitación</label>
-                                    <select value={reservaEdit.id_habitacion} onChange={(e) => setReservaEdit({...reservaEdit, id_habitacion: parseInt(e.target.value)})}>
+                                    <select 
+                                        value={reservaEdit.id_habitacion} 
+                                        onChange={(e) => {
+                                            const nuevoIdHab = parseInt(e.target.value);
+                                            const nuevoMonto = recalcularMonto(reservaEdit.fecha_ingreso, reservaEdit.fecha_salida, nuevoIdHab);
+                                            setReservaEdit({
+                                                ...reservaEdit, 
+                                                id_habitacion: nuevoIdHab, 
+                                                monto_total: nuevoMonto
+                                            });
+                                        }}
+                                    >
                                         {habitaciones.map(h => (
                                             <option key={h.id_habitacion} value={h.id_habitacion} disabled={h.estado !== 'Disponible' && h.id_habitacion !== reservaEdit.id_habitacion_original}>
                                                 Hab. {h.numero} ({h.estado})
@@ -181,17 +204,47 @@ const Reservas = () => {
                                 </div>
                                 <div className="res-form-group">
                                     <label>Monto Total (Bs.)</label>
-                                    <input type="number" className="res-input-monto" value={reservaEdit.monto_total} readOnly style={{ backgroundColor: '#f1f5f9', cursor: 'not-allowed' }} />
+                                    <input 
+                                        type="number" 
+                                        className="res-input-monto" 
+                                        value={reservaEdit.monto_total} 
+                                        readOnly 
+                                        style={{ backgroundColor: '#e2e8f0', fontWeight: 'bold', cursor: 'not-allowed' }} 
+                                    />
                                 </div>
                             </div>
                             <div className="res-form-grid">
                                 <div className="res-form-group">
                                     <label>Fecha Ingreso</label>
-                                    <input type="date" value={(reservaEdit.fecha_ingreso || "").split('T')[0]} onChange={(e)=> setReservaEdit({...reservaEdit, fecha_ingreso: e.target.value})} />
+                                    <input 
+                                        type="date" 
+                                        value={(reservaEdit.fecha_ingreso || "").split('T')[0]} 
+                                        onChange={(e)=> {
+                                            const nuevaFechaIn = e.target.value;
+                                            const nuevoMonto = recalcularMonto(nuevaFechaIn, reservaEdit.fecha_salida, reservaEdit.id_habitacion);
+                                            setReservaEdit({
+                                                ...reservaEdit, 
+                                                fecha_ingreso: nuevaFechaIn, 
+                                                monto_total: nuevoMonto
+                                            });
+                                        }} 
+                                    />
                                 </div>
                                 <div className="res-form-group">
                                     <label>Fecha Salida</label>
-                                    <input type="date" value={(reservaEdit.fecha_salida || "").split('T')[0]} onChange={(e)=> setReservaEdit({...reservaEdit, fecha_salida: e.target.value})} />
+                                    <input 
+                                        type="date" 
+                                        value={(reservaEdit.fecha_salida || "").split('T')[0]} 
+                                        onChange={(e)=> {
+                                            const nuevaFechaOut = e.target.value;
+                                            const nuevoMonto = recalcularMonto(reservaEdit.fecha_ingreso, nuevaFechaOut, reservaEdit.id_habitacion);
+                                            setReservaEdit({
+                                                ...reservaEdit, 
+                                                fecha_salida: nuevaFechaOut, 
+                                                monto_total: nuevoMonto
+                                            });
+                                        }} 
+                                    />
                                 </div>
                             </div>
                             <div className="res-modal-footer">

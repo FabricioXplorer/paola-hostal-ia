@@ -152,69 +152,202 @@
     transition: 0.3s ease;
 }
 
-/* --- RESPONSIVE OPTIMIZADO --- */
-@media (max-width: 992px) {
-    .about-grid, 
-    .location-grid { 
-        grid-template-columns: 1fr; 
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 1100px) {
+
+    .about-grid {
+        gap: 40px;
+        padding: 0 6%;
     }
-    
-    .about-gallery {
-        order: -1; 
-        grid-template-rows: repeat(2, 180px);
+
+    .location-section {
+        padding: 0 6% 80px;
+    }
+
+    .location-grid {
+        gap: 25px;
+    }
+
+    .contact-details-box {
+        padding: 30px;
+    }
+}
+
+@media (max-width: 768px) {
+
+    .about-page-container {
+        padding-top: 80px;
+    }
+
+    .about-hero {
+        margin-bottom: 60px;
+        padding: 0 20px;
+    }
+
+    .about-grid {
+        grid-template-columns: 1fr;
+        gap: 50px;
+        padding: 0 5%;
+        margin-bottom: 80px;
     }
 
     .about-text {
         text-align: center;
     }
 
+    .about-text h2 {
+        font-size: 2rem;
+    }
+
+    .about-text p {
+        font-size: 1rem;
+        line-height: 1.7;
+    }
+
     .highlight-text {
+        padding: 20px;
+        font-size: 1rem;
         text-align: left;
-        border-radius: 20px;
-        border-left: none;
-        border-top: 4px solid #00A88E;
     }
 
     .about-stats {
         justify-content: center;
+        gap: 25px;
+        flex-wrap: wrap;
     }
-}
 
-@media (max-width: 600px) {
+    .stat-item strong {
+        font-size: 2rem;
+    }
+
     .about-gallery {
-        grid-template-columns: 1fr; 
+        grid-template-columns: 1fr;
         grid-template-rows: auto;
+        gap: 18px;
     }
-    
+
+    .gallery-img,
     .gallery-img.main {
+        height: 260px;
         grid-row: span 1;
-        height: 300px;
+        border-radius: 25px;
     }
-    
-    .gallery-img:not(.main) {
-        height: 200px;
+
+    .location-section {
+        padding: 0 5% 70px;
+    }
+
+    .location-grid {
+        grid-template-columns: 1fr;
+        padding: 15px;
+        border-radius: 30px;
+    }
+
+    .map-container {
+        height: 320px;
+    }
+
+    .contact-details-box {
+        padding: 25px 20px;
+    }
+
+    .c-item {
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+
+    .c-item i {
+        font-size: 1.2rem;
     }
 }
 
-/* Agrega esto al final de SobreNosotros.css */
-.about-text, .about-gallery {
-    animation: fadeInUp 1s ease-out forwards;
-}
+@media (max-width: 480px) {
 
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
+    .about-page-container {
+        padding-top: 70px;
     }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
 
-.pao-invite p {
-    font-size: 0.95rem;
-    line-height: 1.4;
-    margin-bottom: 15px; /* Espacio extra */
-    color: rgba(255, 255, 255, 0.7);
+    .about-hero {
+        margin-bottom: 45px;
+    }
+
+    .about-grid {
+        padding: 0 16px;
+        gap: 35px;
+        margin-bottom: 60px;
+    }
+
+    .about-text h2 {
+        font-size: 1.7rem;
+    }
+
+    .about-text p {
+        font-size: 0.95rem;
+        line-height: 1.6;
+    }
+
+    .highlight-text {
+        padding: 18px;
+        border-radius: 0 16px 16px 0;
+        font-size: 0.95rem;
+    }
+
+    .highlight-text i {
+        font-size: 1.1rem;
+        margin-right: 10px;
+    }
+
+    .about-stats {
+        gap: 20px;
+    }
+
+    .stat-item strong {
+        font-size: 1.7rem;
+    }
+
+    .stat-item span {
+        font-size: 0.75rem;
+    }
+
+    .about-gallery {
+        gap: 15px;
+    }
+
+    .gallery-img,
+    .gallery-img.main {
+        height: 220px;
+        border-radius: 20px;
+    }
+
+    .location-section {
+        padding: 0 16px 60px;
+    }
+
+    .location-grid {
+        padding: 12px;
+        border-radius: 24px;
+    }
+
+    .map-container {
+        height: 250px;
+    }
+
+    .contact-details-box {
+        padding: 20px 15px;
+    }
+
+    .c-item {
+        gap: 12px;
+        margin-bottom: 18px;
+        align-items: flex-start;
+    }
+
+    .c-item i {
+        font-size: 1rem;
+        margin-top: 3px;
+    }
 }

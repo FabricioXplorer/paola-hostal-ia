@@ -436,37 +436,91 @@
     70% { transform: scale(1.1); box-shadow: 0 0 0 12px rgba(0, 168, 142, 0); }
     100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 168, 142, 0); }
 }
-
 /* --- RESPONSIVE --- */
 @media (max-width: 1100px) {
-    /* MODIFICADO: Ajuste para tablets para mantener 2 columnas */
+
+    .bv-hero-content {
+        padding: 70px 6%;
+    }
+
     .rooms-grid {
         grid-template-columns: repeat(2, 1fr);
+        gap: 30px;
     }
+
     .pao-recommendation-wide {
         grid-column: 1 / -1;
         padding: 40px;
     }
+
+    .room-info {
+        padding: 24px;
+    }
+
+    .buffet-overlay-centered {
+        padding: 50px 6%;
+    }
 }
 
 @media (max-width: 768px) {
+
+    .bon-voyage-container,
+    .bv-buffet-section {
+        background-attachment: scroll;
+    }
+
     .bv-hero-content {
         padding: 60px 5%;
+    }
+
+    .pao-title {
+        font-size: 42px;
+        line-height: 1.15;
+        letter-spacing: -1px;
+    }
+
+    .pao-subtitle {
+        font-size: 15px;
+    }
+
+    .pao-badge {
+        justify-content: center;
+        flex-wrap: wrap;
+        text-align: center;
     }
 
     .pao-hero-actions {
         flex-direction: column;
         width: 100%;
-        max-width: 320px;
+        max-width: 350px;
+        align-items: center;
     }
 
-    .bv-btn-reserve-now, .bv-btn-secondary {
+    .bv-btn-reserve-now,
+    .bv-btn-secondary {
         width: 100%;
+        min-width: unset;
     }
 
-    /* MODIFICADO: Grilla a 1 columna en móviles */
     .rooms-grid {
         grid-template-columns: 1fr;
+        gap: 25px;
+    }
+
+    .room-img-container {
+        height: 220px;
+    }
+
+    .room-info {
+        padding: 22px;
+    }
+
+    .room-info h3 {
+        font-size: 18px;
+    }
+
+    .room-info p {
+        font-size: 13px;
     }
 
     .pao-recommendation-wide {
@@ -475,18 +529,37 @@
         border-top: 3px solid #C5A059;
         flex-direction: column;
         grid-column: span 1;
+        padding: 35px 25px;
     }
 
     .pao-rec-wrapper {
         text-align: center;
     }
 
+    .pao-rec-title {
+        font-size: 34px;
+    }
+
+    .pao-rec-subtitle {
+        font-size: 15px;
+    }
+
     .bv-btn-chat-pao {
         margin: 0 auto;
+        width: 100%;
+        justify-content: center;
     }
 
     .buffet-overlay-centered {
         padding: 40px 5%;
+    }
+
+    .buffet-title {
+        font-size: 36px;
+    }
+
+    .buffet-description {
+        font-size: 15px;
     }
 
     .buffet-menu-grid-centered {
@@ -497,12 +570,58 @@
     .buffet-actions-centered {
         flex-direction: column;
         gap: 15px;
+        width: 100%;
+    }
+
+    .buffet-badge,
+    .bv-btn-buffet-more {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+
+    .bv-hero-content {
+        padding: 50px 20px;
+    }
+
+    .pao-title {
+        font-size: 34px;
+    }
+
+    .section-title {
+        font-size: 26px;
+    }
+
+    .pao-rec-title {
+        font-size: 28px;
+    }
+
+    .buffet-title {
+        font-size: 30px;
+    }
+
+    .buffet-description {
+        font-size: 14px;
+    }
+
+    .bv-btn-reserve-now,
+    .bv-btn-secondary,
+    .bv-btn-chat-pao {
+        padding: 16px 22px;
+    }
+
+    .room-price-tag {
+        font-size: 11px;
+        padding: 7px 12px;
     }
 }
 
 /* Fix para Parallax en iOS */
 @supports (-webkit-overflow-scrolling: touch) {
-    .bon-voyage-container, .bv-buffet-section {
+    .bon-voyage-container,
+    .bv-buffet-section {
         background-attachment: scroll;
     }
 }

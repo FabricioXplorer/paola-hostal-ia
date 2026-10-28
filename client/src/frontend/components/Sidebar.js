@@ -18,7 +18,7 @@ const Sidebar = ({ setIsAuthenticated }) => {
   const userRole = (localStorage.getItem('admin_rol') || '').toLowerCase(); 
 
   const allMenuItems = [
-    { path: '/admin', icon: <LayoutDashboard size={20} />, label: 'Salpicadero' },
+    { path: '/admin', icon: <LayoutDashboard size={20} />, label: 'Panel de Control' },
     { path: '/admin/habitaciones', icon: <BedDouble size={20} />, label: 'Habitaciones' },
     { path: '/admin/reservas', icon: <CalendarCheck size={20} />, label: 'Reservas' },
     { path: '/admin/reportes', icon: <TrendingUp size={20} />, label: 'Reportes' },

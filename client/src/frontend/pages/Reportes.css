@@ -297,63 +297,45 @@
     display: none;
 }
 
-/* --- ESTILOS DE IMPRESIÓN ACTUALIZADOS --- */
 @media print {
-    /* Quitamos .chart-section de aquí para que SÍ se imprima */
+    /* 1. Ocultar globalmente la navegación y menús */
     nav, .sidebar, .admin-header-flex, button, .no-print {
         display: none !important;
     }
 
-    .admin-main-content { margin: 0 !important; padding: 0 !important; }
-    .printable-content { display: block !important; width: 100%; }
-
-    .print-only-header {
-        display: block !important;
-        text-align: center;
-        margin-bottom: 20px;
+    /* 2. Ocultar todo el body por seguridad */
+    body * {
+        visibility: hidden;
     }
 
-    /* Ajuste para que la gráfica ocupe el ancho de la hoja */
-    .chart-section {
-        display: block !important;
-        border: 1px solid #C5A059 !important;
-        margin-bottom: 30px;
-        break-inside: avoid; /* Evita que la gráfica se corte entre dos páginas */
+    /* 3. HACER VISIBLE EL CONTENEDOR PRINCIPAL Y TODO SU CONTENIDO */
+    .admin-page, 
+    .admin-page * {
+        visibility: visible;
     }
 
-    .svg-line-chart {
+    /* 4. Resetear el layout para que el reporte sea el único protagonista */
+    .admin-page {
+        position: absolute;
+        left: 0;
+        top: 0;
         width: 100% !important;
-        height: auto !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: white !important;
     }
 
-    /* Ocultamos las tarjetas pequeñas para ahorrar tinta, dejando solo la de Recaudación */
-    .stats-grid .stat-card:nth-child(2),
-    .stats-grid .stat-card:nth-child(3),
-    .stats-grid .stat-card:nth-child(4) {
-        display: none !important;
-    }
-
-    .stats-grid {
-        display: flex !important;
-        justify-content: center;
-        margin-bottom: 30px;
-    }
-
-    .stat-card {
-        width: 100%;
-        max-width: 350px;
-        border: 1px solid #C5A059 !important;
-    }
-
-    .table-container { 
-        box-shadow: none !important; 
-        border: 1px solid #ddd !important; 
-        page-break-before: auto;
-    }
-
-    .print-only-footer {
+    /* 5. Asegurar que la cabecera del reporte (títulos y filtros) aparezca */
+    .title-section, .page-title, .page-subtitle {
         display: block !important;
-        margin-top: 50px;
-        text-align: center;
+        visibility: visible !important;
+        text-align: center !important;
+    }
+
+    /* 6. Asegurar que las tarjetas y tablas sean visibles */
+    .printable-content, .stats-grid, .stat-card, .chart-section, .table-container {
+        visibility: visible !important;
+        display: block !important;
+        width: 100% !important;
     }
 }

@@ -19,7 +19,7 @@ const AdminDashboard = () => {
   const formatearFecha = (fechaRaw) => {
     if (!fechaRaw) return "No definida";
     try {
-      const fechaLimpia = fechaRaw.split('T')[0].replace(/-/g, '\/');
+      const fechaLimpia = fechaRaw.split('T')[0].replace(/-/g, '/');
       return new Date(fechaLimpia).toLocaleDateString('es-ES', { 
         day: 'numeric', 
         month: 'long', 
@@ -30,12 +30,64 @@ const AdminDashboard = () => {
     }
   };
 
+  // 🚀 LOGICA CORREGIDA Y BLINDADA CONTRA EL REBOTE Y LOS 404
   const obtenerHabitaciones = async () => {
     try {
       const response = await fetch('http://localhost:5000/api/habitaciones');
-      const data = await response.json();
-      setHabitaciones(data);
-    } catch (error) { console.error("Error al obtener habitaciones:", error); }
+      const habs = await response.json();
+      
+      const habitacionesConEstadoReal = await Promise.all(habs.map(async (hab) => {
+        // Si la habitación ya está en mantenimiento, la respetamos de inmediato
+        if (hab.estado === 'Mantenimiento') {
+          return {
+            ...hab,
+            estado: 'Mantenimiento',
+            id_reserva_pendiente: null
+          };
+        }
+
+        try {
+          const resDetalle = await fetch(`http://localhost:5000/api/detalles-huesped/${hab.id_habitacion}`);
+          const detalle = await resDetalle.json();
+          
+          if (!detalle) {
+            return {
+              ...hab,
+              estado: hab.estado, 
+              id_reserva_pendiente: null
+            };
+          }
+
+          if (detalle.estado_reserva === 'Pendiente') {
+            return {
+              ...hab,
+              estado: 'En Espera',
+              id_reserva_pendiente: detalle.id_reserva
+            };
+          }
+
+          if (detalle.estado_reserva === 'Confirmada' || detalle.estado_reserva === 'Check-in') {
+            return {
+              ...hab,
+              estado: 'Ocupada',
+              id_reserva_pendiente: detalle.id_reserva
+            };
+          }
+        } catch (e) {
+          console.error("Error al consultar detalle de habitación:", e);
+        }
+
+        return {
+          ...hab,
+          estado: hab.estado, 
+          id_reserva_pendiente: null
+        };
+      }));
+
+      setHabitaciones(habitacionesConEstadoReal);
+    } catch (error) { 
+      console.error("Error al obtener habitaciones:", error); 
+    }
   };
 
   useEffect(() => {
@@ -61,7 +113,60 @@ const AdminDashboard = () => {
     }
   };
 
-  // CÁLCULO DINÁMICO INCLUYENDO DESCUENTO
+  const handleAccionReserva = async (hab, accion) => {
+    const mensajeConfirmar = accion === 'aprobar'
+      ? "¿Confirmar que el pago QR ingresó correctamente al banco? Se enviará un WhatsApp de éxito y la habitación pasará a Ocupada."
+      : "¿Rechazar este comprobante por inconsistencia o fraude? Se enviará un WhatsApp de alerta y la habitación volverá a estar Disponible.";
+
+    if (!window.confirm(mensajeConfirmar)) return;
+
+    const idReservaDestino = hab.id_reserva_pendiente;
+
+    if (!idReservaDestino) {
+      alert("Error en interfaz: No se localizó un ID de reserva transaccional para esta habitación.");
+      return;
+    }
+
+    try {
+      const urlDestino = accion === 'aprobar'
+        ? `http://localhost:5000/api/dashboard/aprobar-reserva/${idReservaDestino}`
+        : `http://localhost:5000/api/dashboard/rechazar-reserva/${idReservaDestino}`;
+
+      const response = await fetch(urlDestino, { method: 'PUT' });
+      const resultado = await response.json();
+
+      if (response.ok) {
+        alert(resultado.message || "¡Acción ejecutada con éxito!");
+        
+        setHabitaciones(prevHabs => 
+          prevHabs.map(h => {
+            if (h.id_habitacion === hab.id_habitacion) {
+              return {
+                ...h,
+                estado: accion === 'aprobar' ? 'Ocupada' : 'Disponible',
+                id_reserva_pendiente: null
+              };
+            }
+            return h;
+          })
+        );
+
+        setDetallesHuesped(null);
+        
+        setTimeout(() => {
+          obtenerHabitaciones();
+        }, 500);
+
+      } else {
+        alert("Error en sistema: " + (resultado.error || "No se pudo actualizar el estado."));
+      }
+
+    } catch (error) {
+      console.error("Error al procesar la acción del panel:", error);
+      alert("Error de conexión con el servidor de Paola Hostal.");
+    }
+  };
+
   const calcularTotal = () => {
     if (!formData.fechaEntrada || !formData.fechaSalida || !habitacionSeleccionada) return 0;
     const inicio = new Date(formData.fechaEntrada);
@@ -71,7 +176,6 @@ const AdminDashboard = () => {
     
     let total = noches > 0 ? noches * habitacionSeleccionada.precio_noche : 0;
 
-    // Si el descuento está marcado, restamos 20 Bs
     if (aplicarDescuento && total >= 20) {
       total -= 20;
     }
@@ -81,7 +185,7 @@ const AdminDashboard = () => {
 
   const guardarReserva = async (e) => {
     e.preventDefault();
-    const total = calcularTotal(); // Obtenemos el total ya procesado
+    const total = calcularTotal(); 
     if (total <= 0) return alert("Fecha de salida inválida.");
 
     const confirmacion = window.confirm(`Total final: ${total} Bs. ¿Confirmar registro?`);
@@ -106,7 +210,7 @@ const AdminDashboard = () => {
       if (response.ok) {
         alert("¡Registro exitoso!");
         setHabitacionSeleccionada(null);
-        setAplicarDescuento(false); // Reset del descuento
+        setAplicarDescuento(false); 
         setFormData({ ...formData, nombre: '', documento: '', telefono: '', email: '', fechaSalida: '' }); 
         obtenerHabitaciones();
       }
@@ -114,19 +218,71 @@ const AdminDashboard = () => {
   };
 
   const manejarCheckOut = async (idHabitacion) => {
-    if (window.confirm("¿Confirmar salida del huésped? La habitación quedará disponible y la reserva se marcará como finalizada.")) {
+    if (window.confirm("¿Confirmar salida del huésped? La habitación quedará en mantenimiento.")) {
       try {
+        setHabitaciones(prevHabs => 
+          prevHabs.map(h => {
+            if (h.id_habitacion === idHabitacion) {
+              return {
+                ...h,
+                estado: 'Mantenimiento',
+                id_reserva_pendiente: null
+              };
+            }
+            return h;
+          })
+        );
+        setDetallesHuesped(null);
+
         const response = await fetch(`http://localhost:5000/api/registrar-checkout/${idHabitacion}`, { 
           method: 'PUT' 
         });
+        
         if (response.ok) { 
           alert("Check-out realizado con éxito."); 
-          setDetallesHuesped(null); 
-          obtenerHabitaciones(); 
         } else {
-          alert("No se pudo procesar el Check-out.");
+          alert("El servidor procesó el cambio, pero hubo un detalle de respuesta.");
+          obtenerHabitaciones(); 
         }
-      } catch (error) { console.error("Error en Check-out:", error); }
+      } catch (error) { 
+        console.error("Error en Check-out:", error); 
+        alert("Error de conexión con el servidor.");
+        obtenerHabitaciones();
+      }
+    }
+  };
+
+  // NUEVA FUNCIÓN PARA LIBERAR EL MANTENIMIENTO MANUALMENTE
+  const liberarMantenimiento = async (idHabitacion) => {
+    if (window.confirm("¿La limpieza ha finalizado? La habitación volverá a estar Disponible.")) {
+      try {
+        setHabitaciones(prevHabs => 
+          prevHabs.map(h => {
+            if (h.id_habitacion === idHabitacion) {
+              return {
+                ...h,
+                estado: 'Disponible'
+              };
+            }
+            return h;
+          })
+        );
+
+        const response = await fetch(`http://localhost:5000/api/liberar-mantenimiento/${idHabitacion}`, { 
+          method: 'PUT' 
+        });
+        
+        if (response.ok) { 
+          alert("¡Habitación disponible nuevamente!"); 
+        } else {
+          alert("Hubo un error al actualizar el estado.");
+          obtenerHabitaciones(); 
+        }
+      } catch (error) { 
+        console.error("Error al liberar mantenimiento:", error); 
+        alert("Error de conexión con el servidor.");
+        obtenerHabitaciones();
+      }
     }
   };
 
@@ -138,10 +294,10 @@ const AdminDashboard = () => {
         {habitaciones.map((hab) => {
           const claseEstado = hab.estado.toLowerCase().trim();
           return (
-            <div key={hab.id_habitacion} className={`card-habitacion card-${claseEstado}`}>
+            <div key={hab.id_habitacion} className={`card-habitacion card-${claseEstado.replace(/\s+/g, '-')}`}>
               <span className="estado-superior">{hab.estado}</span>
               
-              {claseEstado === 'ocupada' && (
+              {(claseEstado === 'ocupada' || claseEstado === 'en espera') && (
                 <button 
                   className="btn-detalles-icono" 
                   onClick={(e) => { e.stopPropagation(); verDetalles(hab); }} 
@@ -167,9 +323,33 @@ const AdminDashboard = () => {
                   <button className="btn-check-out" onClick={() => manejarCheckOut(hab.id_habitacion)}>Check-out</button>
                 )}
 
+                {claseEstado === 'en espera' && (
+                  <div className="pao-acciones-espera">
+                    <button 
+                      className="btn-aprobar-pago" 
+                      onClick={() => handleAccionReserva(hab, 'aprobar')}
+                    >
+                      Aprobar Pago
+                    </button>
+                    <button 
+                      className="btn-rechazar-pago" 
+                      onClick={() => handleAccionReserva(hab, 'rechazar')}
+                    >
+                      Rechazar / Fraude
+                    </button>
+                  </div>
+                )}
+
                 {claseEstado === 'mantenimiento' && (
-                  <div className="aviso-mantenimiento">
-                    FUERA DE SERVICIO
+                  <div className="aviso-mantenimiento" style={{display: 'flex', flexDirection: 'column', gap: '8px', width: '100%'}}>
+                    <span style={{fontSize: '0.75rem', fontWeight: 'bold', textAlign: 'center'}}>EN LIMPIEZA</span>
+                    <button 
+                      className="btn-liberar-mantenimiento" 
+                      onClick={() => liberarMantenimiento(hab.id_habitacion)}
+                      style={{background: '#22c55e', color: 'white', border: 'none', padding: '6px 10px', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold'}}
+                    >
+                      Liberar Habitación
+                    </button>
                   </div>
                 )}
               </div>
@@ -193,7 +373,6 @@ const AdminDashboard = () => {
               <div className="form-group"><label>Fecha Entrada</label><input type="date" value={formData.fechaEntrada} onChange={(e)=>setFormData({...formData, fechaEntrada: e.target.value})} required /></div>
               <div className="form-group"><label>Fecha Salida</label><input type="date" required onChange={(e)=>setFormData({...formData, fechaSalida: e.target.value})} /></div>
               
-              {/* SECCIÓN DE DESCUENTO */}
               <div className="form-group-full">
                 <div className="descuento-control" style={{display: 'flex', alignItems: 'center', gap: '10px', padding: '10px', background: '#f0fdf4', borderRadius: '8px', border: '1px dashed #22c55e', marginTop: '10px', cursor: 'pointer'}} onClick={() => setAplicarDescuento(!aplicarDescuento)}>
                   <input type="checkbox" checked={aplicarDescuento} onChange={() => {}} style={{width: '18px', height: '18px', cursor: 'pointer'}} />
@@ -232,6 +411,20 @@ const AdminDashboard = () => {
                 <div><label>Fecha de Ingreso</label><p>{formatearFecha(detallesHuesped.fecha_entrada)}</p></div>
                 <div><label>Fecha de Salida</label><p>{formatearFecha(detallesHuesped.fecha_salida)}</p></div>
               </div>
+              
+              {detallesHuesped.estado_reserva === 'Pendiente' && detallesHuesped.comprobante_url && (
+                <div className="detalle-comprobante-box">
+                  <label className="detalle-comprobante-label">Comprobante de Pago Recibido:</label>
+                  <img 
+                    src={detallesHuesped.comprobante_url} 
+                    alt="Comprobante" 
+                    className="detalle-comprobante-img"
+                    onClick={() => window.open(detallesHuesped.comprobante_url, '_blank')}
+                  />
+                  <p className="detalle-comprobante-hint">Click en la imagen para ampliar</p>
+                </div>
+              )}
+
               <div className="monto-final-badge"><span>Total de Estancia:</span><strong>{detallesHuesped.monto_total} Bs.</strong></div>
               
               <div className="modal-footer-detalles" style={{marginTop: '20px'}}>

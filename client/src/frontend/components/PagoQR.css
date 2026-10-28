@@ -1,0 +1,152 @@
+/* src/components/PagoQR.css */
+.qr-payment-container {
+  background: #0f172a;
+  border: 1px solid #334155;
+  border-radius: 12px;
+  padding: 24px;
+  max-width: 450px;
+  margin: 0 auto;
+  color: #fff;
+  font-family: sans-serif;
+}
+
+.qr-instructions h3 {
+  color: #f59e0b; /* Tu color naranja de acento */
+  margin-top: 0;
+  text-align: center;
+}
+
+.monto-box {
+  background: #1e293b;
+  border-radius: 8px;
+  padding: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 16px 0;
+}
+
+.monto-box strong {
+  font-size: 1.3rem;
+  color: #f59e0b;
+}
+
+.qr-image-wrapper {
+  text-align: center;
+  background: #fff;
+  padding: 16px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  max-width: 220px;
+  margin: 0 auto 20px auto;
+}
+
+.qr-img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Zona de arrastrar/soltar archivo */
+.dropzone-label {
+  display: block;
+  border: 2px dashed #475569;
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+  background: #1e293b;
+  transition: border-color 0.3s;
+}
+
+.dropzone-label:hover {
+  border-color: #f59e0b;
+}
+
+.file-input-hidden {
+  display: none;
+}
+
+.upload-icon {
+  font-size: 2.5rem;
+  color: #64748b;
+  margin-bottom: 8px;
+}
+
+.file-name {
+  font-size: 0.85rem;
+  color: #f59e0b;
+  margin-top: 4px;
+}
+
+/* Vista previa */
+.image-preview-box {
+  margin-top: 15px;
+  text-align: center;
+}
+
+.image-preview-box p {
+  font-size: 0.9rem;
+  color: #94a3b8;
+}
+
+.comprobante-preview {
+  max-width: 100%;
+  max-height: 200px;
+  border-radius: 6px;
+  border: 1px solid #475569;
+}
+
+/* Botón de envío */
+.btn-enviar-pago {
+  width: 100%;
+  background: #f59e0b;
+  color: #000;
+  border: none;
+  padding: 12px;
+  border-radius: 6px;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  transition: background 0.3s;
+}
+
+.btn-enviar-pago:hover:not(:disabled) {
+  background: #d97706;
+}
+
+.btn-enviar-pago:disabled {
+  background: #334155;
+  color: #64748b;
+  cursor: not-allowed;
+}
+
+/* Éxito */
+.qr-success-card {
+  text-align: center;
+  padding: 40px 20px;
+  background: #0f172a;
+  border: 1px solid #334155;
+  border-radius: 12px;
+}
+
+.success-icon {
+  font-size: 4rem;
+  color: #10b981;
+  margin-bottom: 16px;
+}
+
+/* Animación del Loading */
+.spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

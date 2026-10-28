@@ -14,12 +14,12 @@
   gap: 20px;
 }
 
-/* --- CARDS DE HABITACIÓN --- */
+/* --- CARDS DE HABITACIÓN BASE --- */
 .card-habitacion {
   position: relative;
   background: white;
   border-radius: 12px;
-  padding: 25px 15px; /* Ajuste un poco más compacto */
+  padding: 25px 15px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -33,10 +33,87 @@
   box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
 }
 
-.card-disponible { border-color: #22c55e; }
-.card-ocupada { border-color: #ef4444; }
-.card-mantenimiento { border-color: #eab308; }
+/* --- CLASES DE ESTADO POR COLOR --- */
+.card-disponible { border-color: #22c55e !important; }
+.card-ocupada { border-color: #ef4444 !important; }
+.card-mantenimiento { border-color: #eab308 !important; }
 
+/* =========================================================================
+   ESTADO: EN ESPERA (UNIFICADO Y CON MÁXIMA PRIORIDAD DE CASCADA)
+   ========================================================================= */
+.admin-dashboard .habitaciones-grid .card-habitacion.card-en-espera {
+  background-color: #fff7ed !important; /* Fondo naranja/amarillo suave */
+  border: 4px solid #f97316 !important;  /* Forzamos el borde grueso naranja */
+  box-shadow: 0 4px 12px rgba(249, 115, 22, 0.18) !important;
+}
+
+/* El texto de la etiqueta superior dentro del card naranja */
+.card-habitacion.card-en-espera .estado-superior {
+  background-color: #ffedd5 !important;
+  color: #ea580c !important;
+  font-weight: 700 !important;
+  border: 1px solid #fed7aa !important;
+}
+
+/* El número de habitación (#303) adaptado al contraste naranja */
+.card-habitacion.card-en-espera .habitacion-numero {
+  color: #c2410c !important;
+}
+
+/* El tag del precio de la habitación */
+.card-habitacion.card-en-espera .habitacion-precio-tag {
+  background-color: #ffedd5 !important;
+  color: #ea580c !important;
+}
+
+/* =========================================================================
+   CONTENEDOR DE BOTONES DE ACCIÓN HUMANA (DASHBOARD)
+   ========================================================================= */
+.pao-acciones-espera {
+  margin-top: 12px !important;
+  width: 100% !important;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* Botón Verde - Aprobar Pago */
+.card-en-espera .pao-acciones-espera .btn-aprobar-pago {
+  background-color: #22c55e !important;
+  color: white !important;
+  border: none !important;
+  padding: 8px 10px !important;
+  border-radius: 6px !important;
+  font-size: 0.75rem !important;
+  font-weight: bold !important;
+  cursor: pointer !important;
+  text-transform: uppercase;
+  transition: background-color 0.2s ease !important;
+}
+
+.card-en-espera .pao-acciones-espera .btn-aprobar-pago:hover {
+  background-color: #16a34a !important;
+}
+
+/* Botón Rojo - Rechazar / Fraude */
+.card-en-espera .pao-acciones-espera .btn-rechazar-pago {
+  background-color: #ef4444 !important;
+  color: white !important;
+  border: none !important;
+  padding: 8px 10px !important;
+  border-radius: 6px !important;
+  font-size: 0.75rem !important;
+  font-weight: bold !important;
+  cursor: pointer !important;
+  text-transform: uppercase;
+  transition: background-color 0.2s ease !important;
+}
+
+.card-en-espera .pao-acciones-espera .btn-rechazar-pago:hover {
+  background-color: #dc2626 !important;
+}
+
+/* --- DETALLES DE TEXTOS EN CARD --- */
 .habitacion-numero {
   font-size: 1.8rem;
   font-weight: bold;
@@ -59,10 +136,11 @@
   font-weight: 800;
   text-transform: uppercase;
   padding: 2px 6px;
+  border-radius: 4px;
 }
 
-.card-disponible .estado-superior { color: #166534; }
-.card-ocupada .estado-superior { color: #991b1b; }
+.card-disponible .estado-superior { color: #166534; background: #f0fdf4; }
+.card-ocupada .estado-superior { color: #991b1b; background: #fef2f2; }
 
 .habitacion-precio-tag {
   margin-top: auto;
@@ -74,7 +152,7 @@
   border-radius: 6px;
 }
 
-/* --- BOTONES DEL CARD --- */
+/* --- BOTONES DEL CARD NORMALES --- */
 .btn-check-in, .btn-check-out {
   margin-top: 12px;
   padding: 6px 16px;
@@ -85,6 +163,7 @@
   cursor: pointer;
   transition: all 0.2s;
   border: 2px solid transparent;
+  width: 100%;
 }
 
 .btn-check-in {
@@ -119,37 +198,39 @@
   align-items: center;
   justify-content: center;
   z-index: 1000;
-  -webkit-backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px); 
   backdrop-filter: blur(4px);
   animation: fadeIn 0.2s ease;
 }
-
 .modal-content {
   background: white;
   width: 90%;
-  max-width: 500px; /* Reducido de 600px a 500px */
-  padding: 25px 30px; /* Padding más compacto */
+  max-width: 420px; /* Reducido de 500px a 420px */
+  padding: 15px 20px; /* Reducido para ahorrar espacio vertical */
   border-radius: 16px;
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2);
   color: #1e293b;
   animation: slideUp 0.3s ease;
+  max-height: 90vh; /* Máxima altura permitida */
+  overflow-y: auto; /* Solo muestra scroll si es estrictamente necesario */
+  display: flex;
+  flex-direction: column;
 }
 
 .modal-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 10px; /* Reducido */
   border-bottom: 1px solid #f1f5f9;
-  padding-bottom: 10px;
+  padding-bottom: 5px; /* Reducido */
 }
 
 .modal-header h2 { 
-  font-size: 1.3rem; 
+  font-size: 1.1rem; /* Título más compacto */
   color: #0f172a; 
   font-weight: 700;
 }
-
 .close-x {
   background: #f1f5f9;
   border: none;
@@ -164,37 +245,29 @@
   justify-content: center;
 }
 
-/* Formulario Compacto */
 .modal-form { 
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 15px; /* Reducido de 25px a 15px */
+  gap: 8px; /* Reducido de 15px a 8px */
 }
 
-.form-group-full {
-  grid-column: span 2;
+.form-group, .form-group-full {
   display: flex;
   flex-direction: column;
-  gap: 4px;
-}
-
-.form-group { 
-  display: flex; 
-  flex-direction: column; 
-  gap: 4px;
+  gap: 2px; /* Reducido el espacio entre label e input */
 }
 
 .modal-form label { 
-  font-size: 0.8rem; 
+  font-size: 0.75rem; /* Fuente más pequeña */
   font-weight: 700; 
   color: #475569;
 }
 
 .modal-form input {
-  padding: 8px 12px; /* Más compacto */
+  padding: 6px 10px; /* Inputs más delgados */
   border: 1px solid #e2e8f0;
   border-radius: 8px;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   background-color: #f8fafc;
 }
 
@@ -206,9 +279,9 @@
 
 .modal-footer {
   grid-column: span 2;
-  margin-top: 20px;
+  margin-top: 10px; /* Reducido */
   display: flex;
-  gap: 10px;
+  gap: 8px;
   justify-content: flex-end;
 }
 
@@ -224,14 +297,16 @@
 }
 
 .btn-final-cancel {
-  padding: 10px 20px;
-  background-color: #f1f5f9;
-  color: #475569;
-  border: none;
+  padding: 8px 16px; /* Botones más compactos */
+  font-size: 0.85rem;
   border-radius: 8px;
   font-weight: 700;
+  color: white;
+  background-color: rgb(212, 43, 43);
   cursor: pointer;
-  font-size: 0.9rem;
+}
+.btn-final-cancel:hover{
+  background-color: red;
 }
 
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
@@ -239,14 +314,14 @@
 
 .total-container {
   grid-column: span 2;
-  background: #f0fdf4; /* Verde muy clarito */
-  padding: 15px;
+  background: #f0fdf4;
+  padding: 8px 12px; /* Reducido */
   border-radius: 10px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   border: 2px dashed #22c55e;
-  margin-top: 10px;
+  margin-top: 5px;
 }
 
 .total-container span {
@@ -280,7 +355,7 @@
 }
 
 .modal-detalles {
-  border-top: 8px solid #ef4444; /* Un toque rojo porque la hab está ocupada */
+  border-top: 8px solid #ef4444;
 }
 
 .detalles-body {
@@ -303,7 +378,7 @@
 }
 
 .detalle-grid-fechas p {
-  color: #3b82f6; /* Un color azul para resaltar las fechas */
+  color: #3b82f6;
   font-weight: bold;
   margin-top: 4px;
 }
@@ -322,4 +397,41 @@
 .monto-final-badge strong {
   font-size: 1.4rem;
   color: #22c55e;
+}
+
+/* --- ESTILOS PARA VISUALIZADOR DE COMPROBANTES --- */
+.detalle-comprobante-box {
+  margin: 15px 0;
+  padding: 12px;
+  background-color: #fff7ed;
+  border: 1px solid #fb923c;
+  border-radius: 8px;
+}
+
+.detalle-comprobante-label {
+  font-size: 0.75rem;
+  color: #c2410c;
+  text-transform: uppercase;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.detalle-comprobante-img {
+  width: 100%;
+  border-radius: 4px;
+  cursor: pointer;
+  border: 2px solid #fff;
+  transition: transform 0.2s;
+}
+
+.detalle-comprobante-img:hover {
+  transform: scale(1.02);
+}
+
+.detalle-comprobante-hint {
+  font-size: 0.7rem;
+  color: #9a3412;
+  margin-top: 5px;
+  text-align: center;
 }

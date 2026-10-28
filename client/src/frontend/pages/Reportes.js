@@ -217,7 +217,7 @@ const Reportes = () => {
                                     <td>{m.clientes_mes || 0} registros</td>
                                     <td>
                                         <span className="audit-status">
-                                            <CheckCircle size={14} /> Auditado
+                                            <CheckCircle size={14} /> Finalizado
                                         </span>
                                     </td>
                                 </tr>

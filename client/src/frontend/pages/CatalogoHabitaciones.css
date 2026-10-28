@@ -66,3 +66,106 @@
     border-radius: 20px;
     border: 1px dashed rgba(255, 255, 255, 0.2);
 }
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 1024px) {
+
+    .catalogo-container {
+        padding: 50px 25px;
+    }
+
+    .habitaciones-grid {
+        gap: 28px;
+    }
+
+    .titulo-principal {
+        font-size: 2.6rem;
+    }
+
+    .descripcion-header {
+        font-size: 1.05rem;
+    }
+}
+
+@media (max-width: 768px) {
+
+    .catalogo-container {
+        padding: 40px 18px;
+    }
+
+    .catalogo-header {
+        margin-bottom: 45px;
+    }
+
+    .subtitle-superior {
+        font-size: 0.75rem;
+        letter-spacing: 2px;
+    }
+
+    .titulo-principal {
+        font-size: 2.1rem;
+        line-height: 1.2;
+    }
+
+    .decoracion-linea {
+        width: 50px;
+        height: 3px;
+        margin: 18px auto;
+    }
+
+    .descripcion-header {
+        font-size: 1rem;
+        line-height: 1.6;
+    }
+
+    .habitaciones-grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+        padding-bottom: 60px;
+    }
+
+    .mensaje-carga,
+    .no-datos {
+        padding: 70px 20px;
+        font-size: 1.1rem;
+    }
+}
+
+@media (max-width: 480px) {
+
+    .catalogo-container {
+        padding: 30px 14px;
+    }
+
+    .catalogo-header {
+        margin-bottom: 35px;
+    }
+
+    .subtitle-superior {
+        font-size: 0.7rem;
+        letter-spacing: 1.5px;
+    }
+
+    .titulo-principal {
+        font-size: 1.8rem;
+    }
+
+    .descripcion-header {
+        font-size: 0.95rem;
+        line-height: 1.5;
+    }
+
+    .habitaciones-grid {
+        gap: 20px;
+    }
+
+    .mensaje-carga,
+    .no-datos {
+        padding: 50px 15px;
+        font-size: 1rem;
+        border-radius: 15px;
+    }
+}

@@ -28,7 +28,7 @@ const SobreNosotros = () => {
             
             <p>
               Nuestra atención se define por la calidez y el compromiso de hacerte sentir parte de nuestra familia. 
-              Bajo la guía de <strong>Rosario Ríos Mamani</strong>, transformamos una simple estancia en un recuerdo 
+              Bajo la guía de <strong>Rosario Rivas Mamani</strong>, transformamos una simple estancia en un recuerdo 
               inolvidable, ofreciendo un servicio personalizado que se anticipa a cada una de tus necesidades.
             </p>
 

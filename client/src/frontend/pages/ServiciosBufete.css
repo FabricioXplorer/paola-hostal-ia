@@ -178,23 +178,181 @@
     100% { transform: scale(1); opacity: 1; }
 }
 
-/* --- RESPONSIVE FINAL --- */
-@media (max-width: 992px) {
-    .detalle-grid { 
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 1100px) {
+
+    .desayuno-detalle,
+    .otros-servicios {
+        padding: 0 6%;
+    }
+
+    .detalle-grid {
+        gap: 50px;
+    }
+
+    .detalle-imagen img {
+        height: 420px;
+    }
+
+    .s-card {
+        padding: 50px 30px;
+    }
+}
+
+@media (max-width: 768px) {
+
+    .servicios-page-container {
+        padding-top: 80px;
+    }
+
+    .servicios-hero {
+        margin-bottom: 60px;
+        padding: 0 20px;
+    }
+
+    .servicios-hero h1 {
+        line-height: 1.15;
+        letter-spacing: -1px;
+    }
+
+    .desayuno-detalle,
+    .otros-servicios {
+        padding: 0 5%;
+        margin-bottom: 80px;
+    }
+
+    .detalle-grid {
+        grid-template-columns: 1fr;
         gap: 40px;
     }
-    
+
+    .detalle-imagen {
+        order: -1;
+    }
+
+    .detalle-imagen::before {
+        width: 70px;
+        height: 70px;
+        top: -15px;
+        right: -15px;
+    }
+
+    .detalle-imagen img {
+        height: 320px;
+        border-radius: 25px;
+    }
+
+    .lista-menu {
+        margin: 30px 0;
+    }
+
     .lista-menu li {
-        grid-template-columns: 40px 1fr;
+        grid-template-columns: 30px 1fr;
+        gap: 12px;
         font-size: 1rem;
     }
 
     .lista-menu strong {
         display: block;
-        margin-bottom: 2px;
+        margin-bottom: 4px;
+    }
+
+    .lista-menu span {
+        grid-column: 2;
+    }
+
+    .horario-badge {
+        width: 100%;
+        justify-content: center;
+        text-align: center;
+        padding: 16px 20px;
+        border-radius: 20px;
+        font-size: 0.85rem;
+    }
+
+    .servicios-grid-cards {
+        grid-template-columns: 1fr;
+        gap: 25px;
+    }
+
+    .s-card {
+        padding: 45px 25px;
+        border-radius: 28px;
+    }
+
+    .s-card i {
+        font-size: 3rem;
+        margin-bottom: 25px;
+    }
+
+    .s-card:hover {
+        transform: translateY(-10px);
+    }
+}
+
+@media (max-width: 480px) {
+
+    .servicios-page-container {
+        padding-top: 70px;
+    }
+
+    .servicios-hero {
+        margin-bottom: 45px;
+    }
+
+    .desayuno-detalle,
+    .otros-servicios {
+        padding: 0 16px;
+        margin-bottom: 60px;
+    }
+
+    .detalle-grid {
+        gap: 30px;
     }
 
     .detalle-imagen img {
-        height: 350px;
+        height: 250px;
+        border-radius: 20px;
+    }
+
+    .detalle-imagen::before {
+        width: 50px;
+        height: 50px;
+        border-top: 3px solid #C5A059;
+        border-right: 3px solid #C5A059;
+    }
+
+    .lista-menu li {
+        grid-template-columns: 25px 1fr;
+        font-size: 0.95rem;
+        margin-bottom: 20px;
+    }
+
+    .lista-menu i {
+        font-size: 1rem;
+    }
+
+    .horario-badge {
+        font-size: 0.75rem;
+        gap: 10px;
+        padding: 14px 16px;
+    }
+
+    .servicios-grid-cards {
+        gap: 20px;
+    }
+
+    .s-card {
+        padding: 35px 20px;
+        border-radius: 24px;
+    }
+
+    .s-card i {
+        font-size: 2.5rem;
+        margin-bottom: 20px;
     }
 }
